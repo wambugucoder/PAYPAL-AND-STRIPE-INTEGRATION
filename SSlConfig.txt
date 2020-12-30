@@ -1,0 +1,80 @@
+A) Generate an SSL certificate in a keystore
+     Use PKCS12
+    ~ keytool -genkeypair -alias tomcat -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore keystore.p12 -validity 3650 -storepass <YOUR_PASSWORD>
+
+        . genkeypair: generates a key pair;
+        . alias: the alias name for the item we are generating;
+        . keyalg: the cryptographic algorithm to generate the key pair;
+        . keysize: the size of the key. We have used 2048 bits, but 4096 would be a better choice for production;
+        . storetype: the type of keystore;
+        . keystore: the name of the keystore;
+        . validity: validity number of days;
+        . storepass: a password for the keystore.
+
+
+B) Verify the keystore content
+  ~ keytool -list -v -storetype pkcs12 -keystore keystore.p12
+
+
+c) Enable HTTPS in Spring Boot
+  server:
+    ssl:
+      key-store: classpath:keystore.p12
+      key-store-password: password
+      key-store-type: pkcs12
+      key-alias: tomcat
+      key-password: <YOUR_PASSWORD>
+    port: 8443
+
+D) Configure Spring Security to require HTTPS requests
+package com.gofundme.server.configs
+
+import org.apache.catalina.Context;
+import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.descriptor.web.SecurityCollection;
+import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+
+@Configuration
+class SslConfig {
+
+    // CONFIGURATION BEAN TO REDIRECT ALL HTTP TO HTTPS
+    @Bean
+    open fun servletContainer(): ServletWebServerFactory {
+        val tomcat: TomcatServletWebServerFactory = object : TomcatServletWebServerFactory() {
+            override fun postProcessContext(context: Context) {
+                val securityConstraint = SecurityConstraint()
+                securityConstraint.userConstraint = "CONFIDENTIAL"
+                val collection = SecurityCollection()
+                collection.addPattern("/*")
+                securityConstraint.addCollection(collection)
+                context.addConstraint(securityConstraint)
+            }
+        }
+        tomcat.addAdditionalTomcatConnectors(getHttpConnector())
+        return tomcat
+    }
+
+
+
+    private fun getHttpConnector(): Connector? {
+        val connector = Connector("org.apache.coyote.http11.Http11NioProtocol")
+        connector.scheme = "http"
+        connector.port = 8080
+        connector.secure = false
+        connector.redirectPort = 8443
+        return connector
+    }
+}
+
+E)  Distribute the SSL certificate to clients
+  . Extract SSL-CERT from Key-Store
+    ~ keytool -export -keystore keystore.jks -alias tomcat -file myCertificate.crt
+
+  . Make a browser trust an SSL certificate
+    .. Import an SSL certificate inside the JRE keystore
+      ~ keytool -importcert -file myCertificate.crt -alias tomcat -keystore $JAVA_HOME/jre/lib/security/cacerts

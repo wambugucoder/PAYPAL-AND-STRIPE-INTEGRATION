@@ -19,7 +19,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 class SwaggerConfig:WebMvcConfigurer {
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry.addResourceHandler("swagger-ui.html")
-            .addResourceLocations("classpath:/META-INF/resources/");
+            .addResourceLocations("classpath:/META-INF/resources/")
 
         registry
             .addResourceHandler("/webjars/**")

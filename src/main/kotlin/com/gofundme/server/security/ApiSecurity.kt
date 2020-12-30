@@ -14,17 +14,29 @@ import org.springframework.security.config.http.SessionCreationPolicy
 class ApiSecurity :WebSecurityConfigurerAdapter(){
 
     override fun configure(http: HttpSecurity?) {
-        http?.csrf()?.disable()
+        http?.requiresChannel()
+                // SWITCHING TO HTTPS
+            ?.anyRequest()
+            ?.requiresSecure()
+            ?.and()
+            ?.csrf()?.disable()
+                // STRICT AUTHORIZATION AND AUTHENTICATION
             ?.authorizeRequests()
             ?.antMatchers("/api/v1/auth/**")?.permitAll()
             ?.antMatchers()?.permitAll()
             ?.anyRequest()?.authenticated()
             ?.and()
+                // JWT-TOKEN SESSION
             ?.sessionManagement()
             ?.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            ?.and()
+                // XSS PROTECTION
+            ?.headers()
+            ?.contentSecurityPolicy("script-src 'self' https://trustedscripts.example.com; object-src https://trustedplugins.example.com; report-uri /csp-report-endpoint/")
     }
 
     override fun configure(web: WebSecurity?) {
+        // ALLOW OPENAPI-ENDPOINTS TO BE USED
         web?.ignoring()?.antMatchers("/v2/api-docs",
             "/configuration/ui",
             "/swagger-resources/**",

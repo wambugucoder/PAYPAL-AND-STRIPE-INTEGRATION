@@ -1,0 +1,3 @@
+
+  ~To be run where jasypt jar file is located
+java -cp jasypt-1.9.3.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input=<PLAIN TEXT > password=<YOUR KEY> algorithm=PBEWITHHMACSHA512ANDAES_256 ivGeneratorClassName=org.jasypt.iv.RandomIvGenerator

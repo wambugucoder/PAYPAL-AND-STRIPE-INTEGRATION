@@ -28,7 +28,7 @@ class UserService {
     fun registerUser(registerHandler: RegisterHandler):ResponseEntity<RegisterResponse>{
         //CHECK IF EMAIL EXISTS
 
-        if(userRepository.existByEmail(registerHandler.email)){
+        if(userRepository.existsByEmail(registerHandler.email)){
 
             logStream.sendToLogConsole(LogStreamResponse(level = "WARN",serviceAffected = "UserService",message = "Someone Tried To Register with ${registerHandler.email}"))
 

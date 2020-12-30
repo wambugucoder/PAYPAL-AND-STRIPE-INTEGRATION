@@ -114,7 +114,13 @@
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
             <artifactId>jasypt-spring-boot-starter</artifactId>
-            <version>2.0.0</version>
+            <version>2.1.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.rocketbase.commons/email-template-builder -->
+        <dependency>
+            <groupId>io.rocketbase.commons</groupId>
+            <artifactId>email-template-builder</artifactId>
+            <version>1.6.0</version>
         </dependency>
 
         <dependency>
