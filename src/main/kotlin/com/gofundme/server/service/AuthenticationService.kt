@@ -9,10 +9,11 @@ import com.gofundme.server.responseHandler.RegisterResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 @Service
-class UserService {
+class AuthenticationService {
     @Autowired
     lateinit var userRepository: UserRepository
 
@@ -25,6 +26,9 @@ class UserService {
     @Autowired
     lateinit var logStream: LogStream
 
+    @Autowired
+    lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
+
     fun registerUser(registerHandler: RegisterHandler):ResponseEntity<RegisterResponse>{
         //CHECK IF EMAIL EXISTS
 
@@ -35,9 +39,11 @@ class UserService {
             return ResponseEntity.badRequest().body(RegisterResponse("${registerHandler.email} already exists",httpStatus = HttpStatus.BAD_REQUEST))
         }
         //IF NOT ->CREATE INSTANCE
+        // ENCRYPT PASSWORD
+        val encryptedPassword=bCryptPasswordEncoder.encode(registerHandler.password)
 
         val addressDetails =AddressModel(country = registerHandler.country,city = registerHandler.city)
-        val registrationDetails= UserModel(username = registerHandler.username, email = registerHandler.email,password = registerHandler.password,address = addressDetails)
+        val registrationDetails= UserModel(username = registerHandler.username, email = registerHandler.email,password = encryptedPassword,address = addressDetails)
 
        //SAVE TO DB
 
@@ -47,7 +53,7 @@ class UserService {
        val activationToken:String?= jwtService.generateActivationToken(registerHandler.email)
 
         //SEND EMAIL TO CONFIRM
-        emailService.sendAccountActivationEmail(activationToken)
+        emailService.sendAccountActivationEmail(activationToken,registerHandler)
 
         // RETURN SUCCESS
         logStream.sendToLogConsole(LogStreamResponse(level = "SUCCESS",serviceAffected = "UserService",message = "${registerHandler.username} created an Account"))

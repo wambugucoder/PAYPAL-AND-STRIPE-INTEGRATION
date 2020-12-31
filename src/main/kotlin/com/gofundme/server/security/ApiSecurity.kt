@@ -1,5 +1,6 @@
 package com.gofundme.server.security
 
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 
 @Configuration
 @EnableWebSecurity
@@ -23,7 +25,6 @@ class ApiSecurity :WebSecurityConfigurerAdapter(){
                 // STRICT AUTHORIZATION AND AUTHENTICATION
             ?.authorizeRequests()
             ?.antMatchers("/api/v1/auth/**")?.permitAll()
-            ?.antMatchers()?.permitAll()
             ?.anyRequest()?.authenticated()
             ?.and()
                 // JWT-TOKEN SESSION
@@ -44,5 +45,10 @@ class ApiSecurity :WebSecurityConfigurerAdapter(){
             "/swagger-ui.html",
             "/webjars/**",
             "/actuators")
+    }
+    //BCRYPT CONFIGURATION BEAN
+    @Bean
+    fun passwordEncoder():BCryptPasswordEncoder{
+        return BCryptPasswordEncoder()
     }
 }
