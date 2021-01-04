@@ -6,7 +6,6 @@ import com.gofundme.server.responseHandler.AccountActivationResponse
 import com.gofundme.server.responseHandler.RegisterResponse
 import com.gofundme.server.service.AuthenticationService
 import com.gofundme.server.service.LogStream
-import io.swagger.annotations.ApiOperation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -26,10 +25,6 @@ class AuthenticationController {
     lateinit var logStream: LogStream
 
     @PostMapping("/api/v1/auth/register",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
-    @ApiOperation(
-        notes = "Registers Users and sends them A link that contains a token to Help them activate their account",
-        value = "Registers A User"
-    )
     fun registerUser(@RequestBody @Valid registerHandler: RegisterHandler,bindingResult: BindingResult): ResponseEntity<RegisterResponse> {
         if (bindingResult.hasErrors()){
            logStream.sendToLogConsole(LogStreamResponse(level = "WARN",serviceAffected = "ValidationService",message = "${registerHandler.username } gave wrong credentials during Login"))
@@ -43,10 +38,6 @@ class AuthenticationController {
 
 
     @PutMapping("/api/v1/auth/activate/{token}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
-    @ApiOperation(
-        value = "Activate A Users Account to prove they are Real Users",
-        notes = "Link sent via email Should Make it Possible for a user to Activate Account to be able to enjoy other services offered"
-    )
     fun activateUserAccount(@PathVariable token:String): ResponseEntity<AccountActivationResponse> {
         if (token.isNullOrEmpty()){
             logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "authenticationController",message = "No Token was Provided for Account Activation"))
