@@ -1,22 +1,12 @@
-package com.gofundme.server.responseHandler
-
 import java.io.Serializable
 import java.time.LocalDateTime
 
-class LogStreamResponse:Serializable {
+class LogStreamResponse(
+    val time:LocalDateTime= LocalDateTime.now(),
+    val level:String,
+    val serviceAffected:String,
+    val message:String
 
-    var time:LocalDateTime= LocalDateTime.now()
+):Serializable{
 
-    var level:String
-
-    var serviceAffected:String
-
-    var message:String
-
-    constructor(level:String,serviceAffected:String,message:String){
-        this.time=time
-        this.level=level.toUpperCase()
-        this.serviceAffected=serviceAffected
-        this.message=message
-    }
 }

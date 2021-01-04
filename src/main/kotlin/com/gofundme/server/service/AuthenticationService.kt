@@ -1,10 +1,11 @@
 package com.gofundme.server.service
 
+import LogStreamResponse
 import com.gofundme.server.model.AddressModel
 import com.gofundme.server.model.UserModel
 import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.RegisterHandler
-import com.gofundme.server.responseHandler.LogStreamResponse
+import com.gofundme.server.responseHandler.AccountActivationResponse
 import com.gofundme.server.responseHandler.RegisterResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -60,6 +61,38 @@ class AuthenticationService {
 
         return ResponseEntity.ok(RegisterResponse(message = "You have been Registered Successfully,Check your Email to Activate Account",httpStatus = HttpStatus.OK))
 
+
+    }
+    fun activateUserAccount(token:String): ResponseEntity<AccountActivationResponse> {
+        if(jwtService.isActivationTokenExpired(token)==true){
+           val email=jwtService.extractEmail(token)
+            if (!checkIfUserAccountIsEnabled(email)){
+                //SEARCH FOR USER-DETAILS AND ACTIVATE ACCOUNT
+                val userDetails=userRepository.findByEmail(email)
+                userDetails.isEnabled=true
+                userDetails.isAccountLocked=false
+                //UPDATE DETAILS
+                userRepository.save(userDetails)
+                //LOG DATA
+                logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "authenticationService",message = "Account for $email has Been Activated Successfully"))
+                //RETURN 200
+                return ResponseEntity.ok().body(AccountActivationResponse(message = "Your Account Has Been Activated Succesfully",httpStatus = HttpStatus.OK))
+            }
+            else{
+                logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "authenticationService",message = "$email tried to Activate the Account Again"))
+                return ResponseEntity.badRequest().body(AccountActivationResponse(message="You Already Activated Your Account",httpStatus = HttpStatus.BAD_REQUEST))
+            }
+
+        }
+        else{
+            //RETURN 400
+            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "authenticationService",message = "An expired token was used for Activation ->$token"))
+            return ResponseEntity.badRequest().body(AccountActivationResponse(message="Your Token Expired,Please Retrieve A New One",httpStatus = HttpStatus.BAD_REQUEST))
+        }
+    }
+    fun checkIfUserAccountIsEnabled(email:String): Boolean {
+        val userDetails=userRepository.findByEmail(email)
+        return userDetails.isEnabled
 
     }
 }

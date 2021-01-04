@@ -1,7 +1,7 @@
 package com.gofundme.server.service
 
+import LogStreamResponse
 import com.gofundme.server.requestHandler.RegisterHandler
-import com.gofundme.server.responseHandler.LogStreamResponse
 import io.rocketbase.commons.colors.ColorPalette
 import io.rocketbase.commons.email.EmailTemplateBuilder
 import io.rocketbase.commons.email.model.HtmlTextEmail
@@ -24,11 +24,11 @@ class EmailService {
 
     fun sendAccountActivationEmail(token: String?,registerHandler: RegisterHandler) {
         val builder = EmailTemplateBuilder.builder()
-        val header = "test"
+        val header = "Account Activation"
 
         val htmlTextEmail: HtmlTextEmail = builder
-            //.header()
-            //.and()
+            .header(header)
+            .and()
             .logo("https://www.rocketbase.io/img/logo-dark.png","",0,41)
             .and()
             .addText("Welcome, ${registerHandler.username}!").fontWeight(FontWeight.BOLD).center()
@@ -74,10 +74,9 @@ class EmailService {
             javaMailSender.send(message)
         }
         catch (e:MailException){
-            logStream.sendToLogConsole(LogStreamResponse("ERROR","EmailService","$e"))
+            logStream.sendToLogConsole(LogStreamResponse(level ="ERROR",serviceAffected = "EmailService",message = "$e" ))
         }
-
-        logStream.sendToLogConsole(LogStreamResponse("INFO","EmailService","An Account Activation Email has been sent to ${registerHandler.email}"))
+        logStream.sendToLogConsole(LogStreamResponse(level ="INFO",serviceAffected = "EmailService",message = "An Account Activation Email has been sent to ${registerHandler.email}" ))
     }
 }
 
