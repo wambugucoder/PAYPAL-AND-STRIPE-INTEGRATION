@@ -39,7 +39,7 @@ class UserModel:Serializable {
     var isEnabled:Boolean=false
 
     @Column(nullable = false)
-    var isAccountLocked:Boolean=true
+    var isAccountNotLocked:Boolean=false
 
     @Column(nullable = false)
     var isAccountNonExpired:Boolean=true
@@ -62,7 +62,7 @@ class UserModel:Serializable {
         this.createdDate=createdDate
         this.roles=roles
         this.address=address
-        this.isAccountLocked=isAccountLocked
+        this.isAccountNotLocked=isAccountNotLocked
         this.isEnabled=isEnabled
         this.isAccountNonExpired=isAccountNonExpired
         this.lastModifiedDate=lastModifiedDate
@@ -77,7 +77,7 @@ class UserModel:Serializable {
          this.createdDate=userModel.createdDate
          this.address=userModel.address
          this.roles=userModel.roles
-         this.isAccountLocked=userModel.isAccountLocked
+         this.isAccountNotLocked=userModel.isAccountNotLocked
          this.isEnabled=userModel.isEnabled
          this.isAccountNonExpired=userModel.isAccountNonExpired
          this.lastModifiedDate=userModel.lastModifiedDate

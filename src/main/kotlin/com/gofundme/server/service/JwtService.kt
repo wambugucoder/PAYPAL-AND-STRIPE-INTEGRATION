@@ -1,6 +1,7 @@
 package com.gofundme.server.service
 
 import LogStreamResponse
+import com.gofundme.server.model.UserModel
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -54,5 +55,14 @@ class JwtService {
     fun extractAllClaims(token: String): Claims{
         return Jwts.parser().setSigningKey(securityKey).parseClaimsJws(token).body
 
+    }
+    fun generateLoginToken(user:UserModel): String? {
+        val payload:Map<String,String> = hashMapOf(
+            "email" to user.email,
+            "role" to user.roles.toString(),
+            "createdAt" to user.createdDate.toString(),
+            "verified" to user.isEnabled.toString()
+        )
+        return createActivationToken(payload,user.email)
     }
 }

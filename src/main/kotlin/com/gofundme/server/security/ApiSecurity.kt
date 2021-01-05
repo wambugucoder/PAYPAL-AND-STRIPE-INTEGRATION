@@ -1,7 +1,13 @@
 package com.gofundme.server.security
 
+import com.gofundme.server.service.GoFundMeUserDetailsService
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.AuthenticationProvider
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
@@ -14,6 +20,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class ApiSecurity :WebSecurityConfigurerAdapter(){
+    @Autowired
+    lateinit var goFundMeUserDetailsService:GoFundMeUserDetailsService
+
+    override fun configure(auth: AuthenticationManagerBuilder?) {
+        auth?.userDetailsService(goFundMeUserDetailsService)?.passwordEncoder(passwordEncoder())
+    }
 
     override fun configure(http: HttpSecurity?) {
         http?.requiresChannel()
@@ -50,5 +62,10 @@ class ApiSecurity :WebSecurityConfigurerAdapter(){
     @Bean
     fun passwordEncoder():BCryptPasswordEncoder{
         return BCryptPasswordEncoder()
+    }
+
+    @Bean
+    override fun authenticationManagerBean(): AuthenticationManager {
+        return super.authenticationManagerBean()
     }
 }

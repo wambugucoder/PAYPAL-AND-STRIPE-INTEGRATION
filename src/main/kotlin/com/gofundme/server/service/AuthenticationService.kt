@@ -4,12 +4,15 @@ import LogStreamResponse
 import com.gofundme.server.model.AddressModel
 import com.gofundme.server.model.UserModel
 import com.gofundme.server.repository.UserRepository
+import com.gofundme.server.requestHandler.LoginHandler
 import com.gofundme.server.requestHandler.RegisterHandler
 import com.gofundme.server.responseHandler.AccountActivationResponse
+import com.gofundme.server.responseHandler.LoginResponse
 import com.gofundme.server.responseHandler.RegisterResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.*
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -29,6 +32,9 @@ class AuthenticationService {
 
     @Autowired
     lateinit var bCryptPasswordEncoder: BCryptPasswordEncoder
+
+    @Autowired
+    lateinit var authenticationManager: AuthenticationManager
 
     fun registerUser(registerHandler: RegisterHandler):ResponseEntity<RegisterResponse>{
         //CHECK IF EMAIL EXISTS
@@ -70,7 +76,7 @@ class AuthenticationService {
                 //SEARCH FOR USER-DETAILS AND ACTIVATE ACCOUNT
                 val userDetails=userRepository.findByEmail(email)
                 userDetails.isEnabled=true
-                userDetails.isAccountLocked=false
+                userDetails.isAccountNotLocked=true
                 //UPDATE DETAILS
                 userRepository.save(userDetails)
                 //LOG DATA
@@ -93,6 +99,33 @@ class AuthenticationService {
     fun checkIfUserAccountIsEnabled(email:String): Boolean {
         val userDetails=userRepository.findByEmail(email)
         return userDetails.isEnabled
+
+    }
+    fun loginUser(loginHandler: LoginHandler): ResponseEntity<LoginResponse> {
+        try {
+            authenticationManager.authenticate(UsernamePasswordAuthenticationToken(loginHandler.email,loginHandler.password))
+
+        }
+        catch (e: BadCredentialsException){
+            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "AuthenticationService",message = "${loginHandler.email } provided Wrong Credentials"))
+            return ResponseEntity.badRequest().body(LoginResponse(message = "Invalid Credentials",HttpStatus.BAD_REQUEST, token = null))
+
+        }
+        catch (e: LockedException){
+            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "AuthenticationService",message = "${loginHandler.email } Tried to Login with a locked account"))
+            return ResponseEntity.badRequest().body(LoginResponse(message = "Account Is Not Activated",HttpStatus.BAD_REQUEST, token = null))
+
+        }
+        catch (e: DisabledException){
+            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "AuthenticationService",message = "${loginHandler.email }  Tried to Login with a blocked account"))
+            return ResponseEntity.badRequest().body(LoginResponse(message = "This Account is Blocked",HttpStatus.BAD_REQUEST, token = null))
+        }
+        val userDetails=userRepository.findByEmail(loginHandler.email)
+        val jwtToken = jwtService.generateLoginToken(userDetails)
+        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "AuthenticationService",message = "${loginHandler.email }  Logged In Successfully"))
+        return ResponseEntity.badRequest().body(LoginResponse(message = "Logged In Successfully",HttpStatus.OK, token = jwtToken))
+
+
 
     }
 }
