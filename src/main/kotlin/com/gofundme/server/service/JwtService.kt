@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.function.Function
@@ -64,5 +65,11 @@ class JwtService {
             "verified" to user.isEnabled.toString()
         )
         return createActivationToken(payload,user.email)
+    }
+    fun isvalidatedAuthHeaderToken(token:String,goFundMeUserDetails:UserDetails):Boolean{
+        val email=extractEmail(token)
+        return email==goFundMeUserDetails.username && isActivationTokenExpired(token) == true
+
+
     }
 }
