@@ -12,11 +12,10 @@ import java.time.LocalDateTime
 import java.util.*
 import javax.persistence.*
 
-
-@TypeDefs(
-    TypeDef(name = "long-array", typeClass = LongArrayType::class)
-)
 @Entity
+//@TypeDefs(
+  //  TypeDef(name = "long-array", typeClass = LongArrayType::class)
+//)
 @EntityListeners(AuditingEntityListener::class)
 class DonationsModel:Serializable {
     @Id
@@ -35,9 +34,9 @@ class DonationsModel:Serializable {
     @Column(nullable = false)
     var moneyDonated:Int=0
 
-    @Type(type="long-array")
-    @Column(nullable = false)
-    var donors: Array<Long> = emptyArray()
+   // @Type(type="long-array")
+   // @Column(nullable = false)
+   // var donors: Array<Long> = emptyArray()
 
     @Column(nullable = false)
     var createdBy:String
@@ -58,7 +57,7 @@ class DonationsModel:Serializable {
       this.id=id
       this.lastModifiedDate=lastModifiedDate
       this.createdDate=createdDate
-      this.donors=donors
+     // this.donors=donors
       this.moneyDonated=moneyDonated
   }
 
