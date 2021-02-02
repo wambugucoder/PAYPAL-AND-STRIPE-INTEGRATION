@@ -59,6 +59,7 @@ class DonationsModel:Serializable {
       this.lastModifiedDate=lastModifiedDate
       this.createdDate=createdDate
       this.donors=donors
+      this.moneyDonated=moneyDonated
   }
 
 
