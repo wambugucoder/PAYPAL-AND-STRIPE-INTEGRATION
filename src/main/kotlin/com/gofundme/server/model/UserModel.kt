@@ -1,5 +1,6 @@
 package com.gofundme.server.model
 
+import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
@@ -33,6 +34,11 @@ class UserModel:Serializable {
     @JoinColumn(name="address_id",referencedColumnName = "id")
     @JsonManagedReference
     var address:AddressModel
+
+
+    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @JsonBackReference
+    var donationsCreated:List<DonationsModel>? = emptyList()
 
 
     @Column(nullable = false)
@@ -77,6 +83,7 @@ class UserModel:Serializable {
          this.createdDate=userModel.createdDate
          this.address=userModel.address
          this.roles=userModel.roles
+         this.donationsCreated=userModel.donationsCreated
          this.isAccountNotLocked=userModel.isAccountNotLocked
          this.isEnabled=userModel.isEnabled
          this.isAccountNonExpired=userModel.isAccountNonExpired

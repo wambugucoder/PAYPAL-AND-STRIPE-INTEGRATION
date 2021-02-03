@@ -1,5 +1,7 @@
 package com.gofundme.server.model
 
+import com.fasterxml.jackson.annotation.JsonManagedReference
+import com.vladmihalcea.hibernate.type.array.ListArrayType
 import com.vladmihalcea.hibernate.type.array.LongArrayType
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
@@ -13,10 +15,12 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-//@TypeDefs(
-  //  TypeDef(name = "long-array", typeClass = LongArrayType::class)
-//)
+@TypeDef(
+    name = "list-array",
+    typeClass = ListArrayType::class
+    )
 @EntityListeners(AuditingEntityListener::class)
+
 class DonationsModel:Serializable {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -29,17 +33,27 @@ class DonationsModel:Serializable {
     var category:String
 
     @Column(nullable = false)
+    var isOpen:Boolean=true
+
+    @Column(nullable = false)
     var target:String
 
     @Column(nullable = false)
     var moneyDonated:Int=0
 
-   // @Type(type="long-array")
-   // @Column(nullable = false)
-   // var donors: Array<Long> = emptyArray()
+    @Type(type = "list-array")
+    @Column(
+        nullable = false,
+        name = "donors",
+        columnDefinition = "text[]"
+    )
+   var donors: List<String> = emptyList()
 
-    @Column(nullable = false)
-    var createdBy:String
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JsonManagedReference
+    var createdBy:UserModel
 
     @CreatedDate
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
@@ -49,15 +63,15 @@ class DonationsModel:Serializable {
     @Column( nullable = false, columnDefinition = "TIMESTAMP")
     var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 
-  constructor(details:String,createdBy:String,category:String,target:String){
+  constructor(details:String,category:String,target:String,createdBy:UserModel){
       this.target=target
       this.details=details
       this.createdBy=createdBy
       this.category=category
+      this.isOpen=isOpen
       this.id=id
       this.lastModifiedDate=lastModifiedDate
       this.createdDate=createdDate
-     // this.donors=donors
       this.moneyDonated=moneyDonated
   }
 
