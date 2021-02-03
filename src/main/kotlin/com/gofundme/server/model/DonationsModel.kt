@@ -36,7 +36,7 @@ class DonationsModel:Serializable {
     var isOpen:Boolean=true
 
     @Column(nullable = false)
-    var target:String
+    var target:Int
 
     @Column(nullable = false)
     var moneyDonated:Int=0
@@ -63,7 +63,7 @@ class DonationsModel:Serializable {
     @Column( nullable = false, columnDefinition = "TIMESTAMP")
     var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 
-  constructor(details:String,category:String,target:String,createdBy:UserModel){
+  constructor(details:String,category:String,target:Int,createdBy:UserModel){
       this.target=target
       this.details=details
       this.createdBy=createdBy
@@ -73,6 +73,7 @@ class DonationsModel:Serializable {
       this.lastModifiedDate=lastModifiedDate
       this.createdDate=createdDate
       this.moneyDonated=moneyDonated
+      this.donors=donors
   }
 
 
