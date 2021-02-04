@@ -4,7 +4,10 @@ package com.gofundme.server.service
 import LogStreamResponse
 import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.repository.DonationsRepository
+import com.gofundme.server.repository.UserRepository
+import com.gofundme.server.requestHandler.DonationHandler
 import com.gofundme.server.responseHandler.ClosingDonationResponse
+import com.gofundme.server.responseHandler.DonationResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -20,10 +23,13 @@ class DonationsService {
     @Autowired
     lateinit var logStream: LogStream
 
+    @Autowired
+    lateinit var userRepository: UserRepository
+
 
     fun getAllDonations(): List<DonationsModel> {
         logStream.sendToLogConsole(LogStreamResponse(level = "SUCCESS",serviceAffected = "DonationsService",message = "All Donations Created have been Retrieved"))
-        return donationsRepository.findAllOrderBycreatedDateDesc()
+        return donationsRepository.findAll()
     }
 
     fun getSpecificDonationsById(id:Long): Optional<DonationsModel> {
@@ -54,5 +60,13 @@ class DonationsService {
         }
         donationsRepository.deleteById(id)
         return ResponseEntity.ok().body(ClosingDonationResponse(message = "Donation with id - $id has been deleted Successfully",httpStatus = HttpStatus.OK))
+    }
+    fun createDonation(donationHandler: DonationHandler,id:Long): ResponseEntity<DonationResponse> {
+        val userdetails= userRepository.findUserById(id)
+        val donationDetails  = DonationsModel(details = donationHandler.details,category = donationHandler.category,target = donationHandler.target,createdBy = userdetails)
+        donationsRepository.save(donationDetails)
+        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "DonationsService",message = "${donationHandler.createdBy.username} has created a new donation"))
+        return ResponseEntity.ok().body(DonationResponse(message = "Donation Created Successfully",httpStatus = HttpStatus.OK))
+
     }
 }

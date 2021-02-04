@@ -3,7 +3,7 @@ package com.gofundme.server.requestHandler
 import com.gofundme.server.model.UserModel
 import javax.validation.constraints.NotEmpty
 
-class DonationHandle {
+class DonationHandler{
     @field:NotEmpty(message = "Details Should Not Be Empty")
     var details:String
 
