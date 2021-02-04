@@ -3,6 +3,7 @@ package com.gofundme.server.controller
 import LogStreamResponse
 import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.requestHandler.DonationHandler
+import com.gofundme.server.responseHandler.ClosingDonationResponse
 import com.gofundme.server.responseHandler.DonationResponse
 import com.gofundme.server.service.DonationsService
 import com.gofundme.server.service.LogStream
@@ -45,6 +46,11 @@ class DonationsController {
     fun getSpecificDonation(@PathVariable uid: Long, @PathVariable did: Long): Optional<DonationsModel> {
         logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "DonationController",message = "User with ID -$uid is accessing a donation with ID -$did"))
         return donationsService.getSpecificDonationsById(did)
+
+    }
+    @PutMapping("/api/v1/users/{uid}/close-poll/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun closePoll(@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<ClosingDonationResponse> {
+        return donationsService.closeDonation(did)
 
     }
 }
