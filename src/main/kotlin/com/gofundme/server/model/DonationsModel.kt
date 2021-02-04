@@ -2,16 +2,13 @@ package com.gofundme.server.model
 
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.vladmihalcea.hibernate.type.array.ListArrayType
-import com.vladmihalcea.hibernate.type.array.LongArrayType
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
-import org.hibernate.annotations.TypeDefs
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
 import java.time.LocalDateTime
-import java.util.*
 import javax.persistence.*
 
 @Entity
@@ -36,7 +33,7 @@ class DonationsModel:Serializable {
     var isOpen:Boolean=true
 
     @Column(nullable = false)
-    var target:Int
+    var target:String
 
     @Column(nullable = false)
     var moneyDonated:Int=0
@@ -63,7 +60,7 @@ class DonationsModel:Serializable {
     @Column( nullable = false, columnDefinition = "TIMESTAMP")
     var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 
-  constructor(details:String,category:String,target:Int,createdBy:UserModel){
+  constructor(details:String, category:String, target: String, createdBy:UserModel){
       this.target=target
       this.details=details
       this.createdBy=createdBy

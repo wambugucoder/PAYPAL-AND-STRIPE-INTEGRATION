@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 
+/*
 @Component
 class ScheduledTasksConfig {
 
@@ -19,3 +20,5 @@ class ScheduledTasksConfig {
        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "ScheduleActivity",message = "Hello-World"))
     }
 }
+
+ */

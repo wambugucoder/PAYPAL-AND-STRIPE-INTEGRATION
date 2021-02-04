@@ -63,9 +63,13 @@ class DonationsService {
     }
     fun createDonation(donationHandler: DonationHandler,id:Long): ResponseEntity<DonationResponse> {
         val userdetails= userRepository.findUserById(id)
-        val donationDetails  = DonationsModel(details = donationHandler.details,category = donationHandler.category,target = donationHandler.target,createdBy = userdetails)
+        val donationDetails  = DonationsModel(
+            details = donationHandler.details,
+            category = donationHandler.category,
+            target = donationHandler.target ,
+            createdBy = userdetails)
         donationsRepository.save(donationDetails)
-        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "DonationsService",message = "${donationHandler.createdBy.username} has created a new donation"))
+        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "DonationsService",message = "${userdetails.email} has created a new donation"))
         return ResponseEntity.ok().body(DonationResponse(message = "Donation Created Successfully",httpStatus = HttpStatus.OK))
 
     }

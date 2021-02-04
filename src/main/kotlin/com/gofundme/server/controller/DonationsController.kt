@@ -49,8 +49,15 @@ class DonationsController {
 
     }
     @PutMapping("/api/v1/users/{uid}/close-poll/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun closePoll(@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<ClosingDonationResponse> {
+    fun closeDonation(@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<ClosingDonationResponse> {
         return donationsService.closeDonation(did)
 
     }
+
+    @DeleteMapping("/api/v1/users/{uid}/delete-poll/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun deleteDonation(@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<ClosingDonationResponse> {
+        return donationsService.deleteDonationById(did)
+
+    }
+
 }
