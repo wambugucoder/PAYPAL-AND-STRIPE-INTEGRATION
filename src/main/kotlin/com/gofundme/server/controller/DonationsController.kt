@@ -48,7 +48,7 @@ class DonationsController {
         return donationsService.getSpecificDonationsById(did)
 
     }
-    @PutMapping("/api/v1/users/{uid}/close-poll/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PutMapping("/api/v1/users/{uid}/close-donation/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun closeDonation(@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<ClosingDonationResponse> {
         return donationsService.closeDonation(did)
 

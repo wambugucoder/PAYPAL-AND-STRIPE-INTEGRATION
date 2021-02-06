@@ -33,6 +33,9 @@ class DonationsModel:Serializable {
     var isOpen:Boolean=true
 
     @Column(nullable = false)
+    var approved:Boolean=false
+
+    @Column(nullable = false)
     var target:String
 
     @Column(nullable = false)
@@ -71,6 +74,7 @@ class DonationsModel:Serializable {
       this.createdDate=createdDate
       this.moneyDonated=moneyDonated
       this.donors=donors
+      this.approved=approved
   }
 
 

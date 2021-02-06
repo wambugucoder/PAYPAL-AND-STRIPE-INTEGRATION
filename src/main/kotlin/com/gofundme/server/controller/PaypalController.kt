@@ -16,18 +16,18 @@ class PaypalController {
     lateinit var paypalService: PaypalService
 
 
-    @PostMapping("/api/v1/auth/pay")
+    @PostMapping("/api/v1/paypal/pay")
     fun createPayment(@RequestBody @Valid paypalRequest: PaypalRequest): ResponseEntity<PaypalResponse> {
         return paypalService.createAndRedirectToPaypal(paypalRequest)
 
     }
 
 
-    @GetMapping("/api/v1/auth/pay/success")
+    @GetMapping("/api/v1/paypal/pay/success")
     fun proceedToPaypalUi(@RequestParam("paymentId") paymentId: String, @RequestParam("PayerID") PayerID: String): ResponseEntity<PaypalResponse> {
         return paypalService.performTransaction(paymentId, PayerID)
     }
-    @GetMapping("/api/v1/auth/pay/cancel")
+    @GetMapping("/api/v1/paypal/pay/cancel")
     fun cancelPayment(): ResponseEntity<PaypalResponse> {
         return paypalService.cancelTransaction()
     }
