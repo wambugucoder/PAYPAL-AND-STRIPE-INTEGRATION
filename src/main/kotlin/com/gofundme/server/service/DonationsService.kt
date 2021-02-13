@@ -3,6 +3,7 @@ package com.gofundme.server.service
 
 import LogStreamResponse
 import com.gofundme.server.model.DonationsModel
+import com.gofundme.server.model.FileModel
 import com.gofundme.server.repository.DonationsRepository
 import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.DonationHandler
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
+import org.springframework.util.StringUtils
 import java.util.*
 
 @Service
@@ -63,11 +65,16 @@ class DonationsService {
     }
     fun createDonation(donationHandler: DonationHandler,id:Long): ResponseEntity<DonationResponse> {
         val userdetails= userRepository.findUserById(id)
+        val file=donationHandler.file
+        val fileName= file.originalFilename?.let { StringUtils.cleanPath(it) }
+        val fileDetails=FileModel(fileName,file.contentType,file.bytes)
         val donationDetails  = DonationsModel(
             details = donationHandler.details,
             category = donationHandler.category,
             target = donationHandler.target ,
-            createdBy = userdetails)
+            createdBy = userdetails,
+            file = fileDetails
+        )
         donationsRepository.save(donationDetails)
         logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "DonationsService",message = "${userdetails.email} has created a new donation"))
         return ResponseEntity.ok().body(DonationResponse(message = "Donation Created Successfully",httpStatus = HttpStatus.OK))

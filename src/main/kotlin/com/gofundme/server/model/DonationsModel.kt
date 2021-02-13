@@ -41,6 +41,11 @@ class DonationsModel:Serializable {
     @Column(nullable = false)
     var moneyDonated:Int=0
 
+    @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @JoinColumn(name="file_id",referencedColumnName = "id")
+    @JsonManagedReference
+    var file:FileModel
+
     @Type(type = "list-array")
     @Column(
         nullable = false,
@@ -63,7 +68,7 @@ class DonationsModel:Serializable {
     @Column( nullable = false, columnDefinition = "TIMESTAMP")
     var lastModifiedDate: LocalDateTime = LocalDateTime.now()
 
-  constructor(details:String, category:String, target: String, createdBy:UserModel){
+  constructor(details:String, category:String, target: String, createdBy:UserModel,file:FileModel){
       this.target=target
       this.details=details
       this.createdBy=createdBy
@@ -75,6 +80,7 @@ class DonationsModel:Serializable {
       this.moneyDonated=moneyDonated
       this.donors=donors
       this.approved=approved
+      this.file=file
   }
 
 

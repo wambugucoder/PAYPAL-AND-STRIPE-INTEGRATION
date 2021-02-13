@@ -26,7 +26,7 @@ class DonationsController {
     lateinit var logStream: LogStream
 
 
-    @PostMapping("/api/v1/users/{id}/create-donation",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping("/api/v1/users/{id}/create-donation",produces = [MediaType.APPLICATION_FORM_URLENCODED_VALUE],consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
     fun createDonation(@RequestBody @Valid donationHandler: DonationHandler,bindingResult: BindingResult, @PathVariable id:Long): ResponseEntity<DonationResponse> {
         if (bindingResult.hasErrors()){
             logStream.sendToLogConsole(LogStreamResponse(level = "WARN",serviceAffected = "DonationController",message = "User with id - $id has errors in their donation Request-Body"))
