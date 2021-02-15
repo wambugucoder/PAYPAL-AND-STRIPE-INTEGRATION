@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 
 @Service
@@ -63,11 +64,10 @@ class DonationsService {
         donationsRepository.deleteById(id)
         return ResponseEntity.ok().body(ClosingDonationResponse(message = "Donation with id - $id has been deleted Successfully",httpStatus = HttpStatus.OK))
     }
-    fun createDonation(donationHandler: DonationHandler,id:Long): ResponseEntity<DonationResponse> {
+    fun createDonation(donationHandler: DonationHandler,id:Long,fileReceived:MultipartFile): ResponseEntity<DonationResponse> {
         val userdetails= userRepository.findUserById(id)
-        val file=donationHandler.file
-        val fileName= file.originalFilename?.let { StringUtils.cleanPath(it) }
-        val fileDetails=FileModel(fileName,file.contentType,file.bytes)
+        val fileName = fileReceived.originalFilename?.let { StringUtils.cleanPath(it) }
+        val fileDetails=FileModel(fileName, fileReceived.contentType, fileReceived.bytes)
         val donationDetails  = DonationsModel(
             details = donationHandler.details,
             category = donationHandler.category,

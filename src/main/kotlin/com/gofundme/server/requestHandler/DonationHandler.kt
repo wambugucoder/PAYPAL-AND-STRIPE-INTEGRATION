@@ -14,18 +14,17 @@ class DonationHandler{
     @field:NotEmpty(message = "Target Should Not Be Empty")
     var target:String
 
-    @field:NotEmpty(message = "File Should Not Be Empty")
-    var file:MultipartFile
 
 
 
 
 
-    constructor(details: String,category: String,target: String,file:MultipartFile){
+
+    constructor(details: String,category: String,target: String){
         this.details=details
         this.category=category
         this.target=target
-        this.file=file
+
 
     }
 }

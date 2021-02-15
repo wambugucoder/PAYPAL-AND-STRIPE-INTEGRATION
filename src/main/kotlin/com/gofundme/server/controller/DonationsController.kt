@@ -13,6 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 import java.util.*
 import javax.validation.Valid
 
@@ -26,14 +27,10 @@ class DonationsController {
     lateinit var logStream: LogStream
 
 
-    @PostMapping("/api/v1/users/{id}/create-donation",produces = [MediaType.APPLICATION_FORM_URLENCODED_VALUE],consumes = [MediaType.APPLICATION_FORM_URLENCODED_VALUE])
-    fun createDonation(@RequestBody @Valid donationHandler: DonationHandler,bindingResult: BindingResult, @PathVariable id:Long): ResponseEntity<DonationResponse> {
-        if (bindingResult.hasErrors()){
-            logStream.sendToLogConsole(LogStreamResponse(level = "WARN",serviceAffected = "DonationController",message = "User with id - $id has errors in their donation Request-Body"))
-            return ResponseEntity.badRequest().body(DonationResponse(message = "Please Check Your Details Again",httpStatus = HttpStatus.BAD_REQUEST))
-
-        }
-        return donationsService.createDonation(donationHandler,id)
+    @PostMapping("/api/v1/users/{id}/create-donation",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    fun createDonation(@RequestParam("file") file:MultipartFile ,@RequestParam("details") details:String ,@RequestParam("category") category:String,@RequestParam("target") target:String , @PathVariable id:Long): ResponseEntity<DonationResponse> {
+        val donationHandler=DonationHandler(details,category,target)
+        return donationsService.createDonation(donationHandler,id,file)
 
     }
     @GetMapping("/api/v1/users/{id}/all-donations",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
