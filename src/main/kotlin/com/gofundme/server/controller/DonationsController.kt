@@ -59,5 +59,6 @@ class DonationsController {
 /*
 so basically all i did was integrate a file with my donations.
  The aim was to link images to these files.
- Task completed successfully*/
+ Task completed successfully
+ */
 }
