@@ -33,6 +33,8 @@ class DonationsController {
         return donationsService.createDonation(donationHandler,id,file)
 
     }
+    //Get all donations made
+    //{id} is used normally to reference user and get their details
     @GetMapping("/api/v1/users/{id}/all-donations",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun getAllDonations(@PathVariable id:Long): List<DonationsModel> {
         logStream.sendToLogConsole(LogStreamResponse(level="INFO",serviceAffected = "DonationController",message = "User ith ID- $id has request for all donations"))
@@ -45,6 +47,7 @@ class DonationsController {
         return donationsService.getSpecificDonationsById(did)
 
     }
+    //update donation details to server database
     @PutMapping("/api/v1/users/{uid}/close-donation/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun closeDonation(@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<ClosingDonationResponse> {
         return donationsService.closeDonation(did)
