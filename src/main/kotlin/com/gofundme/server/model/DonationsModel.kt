@@ -60,9 +60,9 @@ class DonationsModel:Serializable {
     @JsonManagedReference
     var createdBy:UserModel
 
-    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
-    @JsonManagedReference
-    var transactions:List<TransactionsModel>?= emptyList()
+    @OneToMany(orphanRemoval = true,cascade = [CascadeType.ALL])
+   // @JsonManagedReference
+    var transactions:List<TransactionsModel>? = emptyList()
 
     @CreatedDate
     @Column(nullable = false, columnDefinition = "TIMESTAMP")

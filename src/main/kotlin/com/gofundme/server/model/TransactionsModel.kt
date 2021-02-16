@@ -19,7 +19,7 @@ class TransactionsModel {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "donation_id",referencedColumnName = "id")
-    @JsonBackReference
+    //@JsonBackReference
     var donation:DonationsModel
 
     @Column(nullable = false)

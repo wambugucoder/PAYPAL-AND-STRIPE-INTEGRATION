@@ -2,6 +2,8 @@ package com.gofundme.server.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
 import com.fasterxml.jackson.annotation.JsonManagedReference
+import org.hibernate.annotations.LazyCollection
+import org.hibernate.annotations.LazyCollectionOption
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
@@ -32,17 +34,20 @@ class UserModel:Serializable {
 
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
     @JoinColumn(name="address_id",referencedColumnName = "id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     var address:AddressModel
 
 
-    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @OneToMany(orphanRemoval = true,cascade = [CascadeType.ALL])
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
     var donationsCreated:List<DonationsModel>? = emptyList()
 
-    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @OneToMany(orphanRemoval = true,cascade = [CascadeType.ALL])
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonBackReference
-    var transactions:List<TransactionsModel>?= emptyList()
+    var transactions:List<TransactionsModel>? = emptyList()
 
 
     @Column(nullable = false)

@@ -23,12 +23,12 @@ class PaypalController {
     }
 
 
-    @GetMapping("/api/v1/paypal/pay/success")
-    fun proceedToPaypalUi(@RequestParam("paymentId") paymentId: String, @RequestParam("PayerID") PayerID: String): ResponseEntity<PaypalResponse> {
-        return paypalService.performTransaction(paymentId, PayerID)
+    @GetMapping("/api/v1/paypal-payment/{uid}/{did}/success")
+    fun proceedToPaypalUi(@PathVariable uid:Long, @PathVariable did:Long, @RequestParam("paymentId") paymentId: String, @RequestParam("PayerID") PayerID: String): ResponseEntity<PaypalResponse> {
+        return paypalService.performTransaction(paymentId, PayerID,uid,did)
     }
-    @GetMapping("/api/v1/paypal/pay/cancel")
-    fun cancelPayment(): ResponseEntity<PaypalResponse> {
-        return paypalService.cancelTransaction()
+    @GetMapping("/api/v1/paypal-payment/{uid}/{did}/cancel")
+    fun cancelPayment(@PathVariable uid:Long, @PathVariable did:Long): ResponseEntity<PaypalResponse> {
+        return paypalService.cancelTransaction(uid)
     }
 }

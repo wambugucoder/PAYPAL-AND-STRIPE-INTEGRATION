@@ -145,8 +145,9 @@ class PaypalService {
         logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "Paypal",message = "Executing Paypal transaction for payerid-$PayerID failed"))
         return ResponseEntity.badRequest().body(PaypalResponse(message = "Oops,Error Executing Payment",httpStatus = HttpStatus.BAD_REQUEST))
     }
-    fun cancelTransaction(): ResponseEntity<PaypalResponse> {
-        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "Paypal",message = "A Paypal Transaction has been cancelled"))
+    fun cancelTransaction(uid:Long): ResponseEntity<PaypalResponse> {
+        val userDetails= userRepository.findUserById(uid)
+        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "Paypal",message = "${userDetails.email} just cancelled a paypal transaction"))
         return ResponseEntity.badRequest().body(PaypalResponse(message = "Your Transaction Has Been Cancelled",httpStatus = HttpStatus.BAD_REQUEST))
     }
 }
