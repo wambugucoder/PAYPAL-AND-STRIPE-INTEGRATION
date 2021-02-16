@@ -16,9 +16,9 @@ class PaypalController {
     lateinit var paypalService: PaypalService
 
 
-    @PostMapping("/api/v1/paypal/pay")
-    fun createPayment(@RequestBody @Valid paypalRequest: PaypalRequest): ResponseEntity<PaypalResponse> {
-        return paypalService.createAndRedirectToPaypal(paypalRequest)
+    @PostMapping("/api/v1/{uid}/{did}/paypal/make-pay")
+    fun createPayment(@RequestBody @Valid paypalRequest: PaypalRequest,@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<PaypalResponse> {
+        return paypalService.createAndRedirectToPaypal(paypalRequest,uid,did)
 
     }
 

@@ -40,6 +40,10 @@ class UserModel:Serializable {
     @JsonBackReference
     var donationsCreated:List<DonationsModel>? = emptyList()
 
+    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @JsonBackReference
+    var transactions:List<TransactionsModel>?= emptyList()
+
 
     @Column(nullable = false)
     var isEnabled:Boolean=false
@@ -72,6 +76,7 @@ class UserModel:Serializable {
         this.isEnabled=isEnabled
         this.isAccountNonExpired=isAccountNonExpired
         this.lastModifiedDate=lastModifiedDate
+        this.transactions=transactions
 
 
    }
@@ -83,6 +88,7 @@ class UserModel:Serializable {
          this.createdDate=userModel.createdDate
          this.address=userModel.address
          this.roles=userModel.roles
+         this.transactions=userModel.transactions
          this.donationsCreated=userModel.donationsCreated
          this.isAccountNotLocked=userModel.isAccountNotLocked
          this.isEnabled=userModel.isEnabled

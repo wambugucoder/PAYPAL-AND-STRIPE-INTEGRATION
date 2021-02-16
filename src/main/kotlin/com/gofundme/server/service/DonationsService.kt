@@ -4,6 +4,7 @@ package com.gofundme.server.service
 import LogStreamResponse
 import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.model.FileModel
+import com.gofundme.server.model.TransactionsModel
 import com.gofundme.server.repository.DonationsRepository
 import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.DonationHandler
@@ -78,6 +79,19 @@ class DonationsService {
         donationsRepository.save(donationDetails)
         logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "DonationsService",message = "${userdetails.email} has created a new donation"))
         return ResponseEntity.ok().body(DonationResponse(message = "Donation Created Successfully",httpStatus = HttpStatus.OK))
+
+    }
+    fun updateDonationCountAndList(did:Long,transactionDetails:TransactionsModel){
+        val getDetails=donationsRepository.getOne(did)
+        //UPDATE MONEY
+        getDetails.moneyDonated= getDetails.moneyDonated + transactionDetails.amountDonated.toInt()
+        //UPDATE DONOR LIST
+        getDetails.donors.add(transactionDetails.initiator.id.toString())
+        //SAVE UPDATED DONATION LIST
+        donationsRepository.save(getDetails)
+
+
+
 
     }
 }

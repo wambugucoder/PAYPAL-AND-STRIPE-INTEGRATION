@@ -52,13 +52,17 @@ class DonationsModel:Serializable {
         name = "donors",
         columnDefinition = "text[]"
     )
-   var donors: List<String> = emptyList()
+   var donors: MutableList<String> =  ArrayList()
 
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id",referencedColumnName = "id")
     @JsonManagedReference
     var createdBy:UserModel
+
+    @OneToMany(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
+    @JsonManagedReference
+    var transactions:List<TransactionsModel>?= emptyList()
 
     @CreatedDate
     @Column(nullable = false, columnDefinition = "TIMESTAMP")
@@ -81,6 +85,7 @@ class DonationsModel:Serializable {
       this.donors=donors
       this.approved=approved
       this.file=file
+      this.transactions=transactions
   }
 
 

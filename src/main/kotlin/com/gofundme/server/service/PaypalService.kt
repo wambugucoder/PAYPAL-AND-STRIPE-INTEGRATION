@@ -1,6 +1,10 @@
 package com.gofundme.server.service
 
 import LogStreamResponse
+import com.gofundme.server.model.TransactionsModel
+import com.gofundme.server.repository.DonationsRepository
+import com.gofundme.server.repository.TransactionRepository
+import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.PaypalRequest
 import com.gofundme.server.responseHandler.PaypalResponse
 import com.paypal.api.payments.*
@@ -23,6 +27,17 @@ class PaypalService {
     @Autowired
     lateinit var logStream: LogStream
 
+    @Autowired
+    lateinit var donationsRepository:DonationsRepository
+
+    @Autowired
+    lateinit var transactionRepository: TransactionRepository
+
+    @Autowired
+    lateinit var userRepository: UserRepository
+
+    @Autowired
+    lateinit var donationsService: DonationsService
 
 
     fun createPayment(total:String, currency:String, method:String, intent:String, description:String, cancelUrl:String, successUrl:String):Payment {
@@ -68,16 +83,18 @@ class PaypalService {
 
         return payment.execute(apiContext,paymentExecution)
     }
-    fun createAndRedirectToPaypal(paypalRequest:PaypalRequest): ResponseEntity<PaypalResponse> {
+    fun createAndRedirectToPaypal(paypalRequest:PaypalRequest,uid:Long,did:Long): ResponseEntity<PaypalResponse> {
+        val donationDetails=donationsRepository.findSpecificDonationById(did)
+
         try {
             val payment=createPayment(
                 total=paypalRequest.total,
                 currency = "USD",
                 method = "paypal",
-                intent = paypalRequest.intent,
-                description = paypalRequest.description,
-                cancelUrl = "http://localhost:8443/api/v1/auth/pay/cancel",
-                successUrl ="https://localhost:8443/api/v1/auth/pay/success"
+                intent = donationDetails.category,
+                description = donationDetails.details,
+                cancelUrl = "http://localhost:8443/api/v1/paypal-payment/$uid/$did/cancel",
+                successUrl ="https://localhost:8443/api/v1/paypal-payment/$uid/$did/success"
             )
 
             for (link in payment.links ){
@@ -96,12 +113,26 @@ class PaypalService {
         logStream.sendToLogConsole(LogStreamResponse(level = "WARN",serviceAffected = "Paypal",message = "Something is Wrong with Users input"))
         return ResponseEntity.badRequest().body(PaypalResponse(message = "Oops,Error Creating Payment",httpStatus = HttpStatus.BAD_REQUEST))
     }
-    fun performTransaction(paymentId:String,PayerID:String): ResponseEntity<PaypalResponse> {
+    fun performTransaction(paymentId:String,PayerID:String,uid:Long,did:Long): ResponseEntity<PaypalResponse> {
+        val userDetails= userRepository.findUserById(uid)
+        val donationDetails=donationsRepository.findSpecificDonationById(did)
+
+
         try {
             val payment=executePayment(paymentId,PayerID)
             if (payment.state == "approved"){
-                logStream.sendToLogConsole(LogStreamResponse(level = "SUCCESS",serviceAffected = "Paypal",message =payment.toString()))
-                //SAVE TRANSACTION DETAILS
+                val transactionDetails=TransactionsModel(
+                    initiator = userDetails,
+                    donation = donationDetails,
+                    amountDonated = payment.transactions[0].amount.toString(),
+                    receiptId = payment.id.toString()
+                )
+                //SAVE TRANSACTION
+                transactionRepository.save(transactionDetails)
+                //UPDATE DONATION COUNT AND USER WHO DONATED
+                donationsService.updateDonationCountAndList(did,transactionDetails)
+                logStream.sendToLogConsole(LogStreamResponse(level = "SUCCESS",serviceAffected = "Paypal",message ="${userDetails.email} just donated via paypal"))
+
                 return ResponseEntity.ok().body(PaypalResponse(message = "Your Payment Has Been Received",httpStatus = HttpStatus.OK))
 
             }
