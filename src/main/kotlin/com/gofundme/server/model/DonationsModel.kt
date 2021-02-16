@@ -2,6 +2,8 @@ package com.gofundme.server.model
 
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.vladmihalcea.hibernate.type.array.ListArrayType
+import org.hibernate.annotations.LazyCollection
+import org.hibernate.annotations.LazyCollectionOption
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
 import org.springframework.data.annotation.CreatedDate
@@ -61,7 +63,8 @@ class DonationsModel:Serializable {
     var createdBy:UserModel
 
     @OneToMany(orphanRemoval = true,cascade = [CascadeType.ALL])
-   // @JsonManagedReference
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     var transactions:List<TransactionsModel>? = emptyList()
 
     @CreatedDate

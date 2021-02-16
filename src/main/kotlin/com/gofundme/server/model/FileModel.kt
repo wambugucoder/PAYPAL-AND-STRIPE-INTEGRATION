@@ -1,6 +1,7 @@
 package com.gofundme.server.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
+import org.hibernate.annotations.Type
 import java.io.Serializable
 import javax.persistence.*
 
@@ -16,8 +17,9 @@ class FileModel:Serializable {
     @Column(nullable = false)
     var type:String?
 
-    @Column(nullable = false)
+
     @Lob
+    @Type(type = "org.hibernate.type.ImageType")
     var data:ByteArray
 
     @OneToOne(mappedBy = "file",orphanRemoval = true)
