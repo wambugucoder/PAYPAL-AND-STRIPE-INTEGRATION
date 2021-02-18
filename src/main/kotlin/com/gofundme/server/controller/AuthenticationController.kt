@@ -8,6 +8,8 @@ import com.gofundme.server.responseHandler.LoginResponse
 import com.gofundme.server.responseHandler.RegisterResponse
 import com.gofundme.server.service.AuthenticationService
 import com.gofundme.server.service.LogStream
+import com.gofundme.server.service.StripeService
+import com.stripe.model.Charge
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -25,6 +27,9 @@ class AuthenticationController {
 
     @Autowired
     lateinit var logStream: LogStream
+
+    @Autowired
+    lateinit var stripeService: StripeService
 
     @PostMapping("/api/v1/auth/register",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun registerUser(@RequestBody @Valid registerHandler: RegisterHandler,bindingResult: BindingResult): ResponseEntity<RegisterResponse> {
@@ -62,4 +67,10 @@ class AuthenticationController {
         return authenticationService.loginUser(loginHandler)
 
     }
+    @PostMapping("/api/v1/auth/stripe")
+    fun paywithStripe(): String {
+        return stripeService.charge()
+
+    }
+
 }

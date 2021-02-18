@@ -41,12 +41,13 @@ class StripeService {
         return token.id
     }
 
-    fun charge(): Charge? {
+    fun charge(): String {
         val chargeParams: MutableMap<String, Any> = HashMap()
         chargeParams["amount"] = 100000
         chargeParams["currency"] = "USD"
         chargeParams["description"] = "Trial"
         chargeParams["source"] = generateCreditCardToken()
-        return Charge.create(chargeParams)
+         Charge.create(chargeParams)
+        return "Done"
     }
 }
