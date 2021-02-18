@@ -34,7 +34,6 @@ class UserModel:Serializable {
 
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
     @JoinColumn(name="address_id",referencedColumnName = "id")
-    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     var address:AddressModel
 

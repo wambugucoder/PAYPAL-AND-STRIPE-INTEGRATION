@@ -14,8 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestParam
-import javax.servlet.http.HttpServletResponse
 
 
 @Service
@@ -121,10 +119,11 @@ class PaypalService {
         try {
             val payment=executePayment(paymentId,PayerID)
             if (payment.state == "approved"){
+
                 val transactionDetails=TransactionsModel(
                     initiator = userDetails,
                     donation = donationDetails,
-                    amountDonated = payment.transactions[0].amount.toString(),
+                    amountDonated = payment.transactions[0].amount.total.toDouble(),
                     receiptId = payment.id.toString()
                 )
                 //SAVE TRANSACTION

@@ -1,11 +1,12 @@
 package com.gofundme.server.model
 
 import com.fasterxml.jackson.annotation.JsonBackReference
+import java.io.Serializable
 import javax.persistence.*
 
 
 @Entity
-class TransactionsModel {
+class TransactionsModel: Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     var id:Long=0
@@ -15,7 +16,7 @@ class TransactionsModel {
     var initiator:UserModel
 
     @Column(nullable = false)
-    var amountDonated:String
+    var amountDonated:Double
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "donation_id",referencedColumnName = "id")
@@ -26,7 +27,7 @@ class TransactionsModel {
     var receiptId:String
 
 
-    constructor(initiator:UserModel,amountDonated:String,donation:DonationsModel,receiptId:String){
+    constructor(initiator:UserModel, amountDonated: Double, donation:DonationsModel, receiptId:String){
         this.initiator=initiator
         this.amountDonated=amountDonated
         this.donation=donation

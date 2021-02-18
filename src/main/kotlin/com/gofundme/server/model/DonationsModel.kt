@@ -41,7 +41,7 @@ class DonationsModel:Serializable {
     var target:String
 
     @Column(nullable = false)
-    var moneyDonated:Int=0
+    var moneyDonated:Double=0.00
 
     @OneToOne(orphanRemoval = true,fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
     @JoinColumn(name="file_id",referencedColumnName = "id")

@@ -84,7 +84,8 @@ class DonationsService {
     fun updateDonationCountAndList(did:Long,transactionDetails:TransactionsModel){
         val getDetails=donationsRepository.getOne(did)
         //UPDATE MONEY
-        getDetails.moneyDonated= getDetails.moneyDonated + transactionDetails.amountDonated.toInt()
+         val newMoney=getDetails.moneyDonated  + transactionDetails.amountDonated
+        getDetails.moneyDonated= newMoney
         //UPDATE DONOR LIST
         getDetails.donors.add(transactionDetails.initiator.id.toString())
         //SAVE UPDATED DONATION LIST
