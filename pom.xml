@@ -162,6 +162,11 @@
             <artifactId>stripe-java</artifactId>
             <version>16.5.1</version>
         </dependency>
+        <dependency>
+            <groupId>tech.bytespot</groupId>
+            <artifactId>daraja-api</artifactId>
+            <version>1.0.8-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>
