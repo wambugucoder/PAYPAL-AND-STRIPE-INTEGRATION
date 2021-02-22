@@ -4,11 +4,11 @@ class StripeChargeRequest {
 
     var amount :Int
     var cardNumber: String
-    var exp_month:String
-    var exp_year:String
+    var exp_month:Int
+    var exp_year:Int
     var cvc:String
 
-    constructor(amount :Int,cardNumber: String,exp_month:String,exp_year:String, cvc:String){
+    constructor(amount :Int,cardNumber: String,exp_month:Int,exp_year:Int, cvc:String){
         this.amount=amount
         this.cardNumber=cardNumber
         this.exp_month=exp_month

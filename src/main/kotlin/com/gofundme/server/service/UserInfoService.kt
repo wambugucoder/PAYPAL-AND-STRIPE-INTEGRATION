@@ -27,13 +27,13 @@ class UserInfoService {
         return userRepository.findAll()
 
     }
-    fun getSpecificUserInfo(id:Long): Optional<UserModel> {
+    fun getSpecificUserInfo(id:Long): UserModel {
        if(!userRepository.existsById(id)){
            logStream.sendToLogConsole(LogStreamResponse(level = "WARN",serviceAffected = "UserInfoService",message = "No UserId ${id}"))
 
        }
         logStream.sendToLogConsole(LogStreamResponse(level="Success",serviceAffected = "UserInfoService",message = "UserId retrieved"))
-        return userRepository.findById(id)
+        return userRepository.findUserById(id)
 
 
     }

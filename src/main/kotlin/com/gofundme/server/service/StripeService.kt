@@ -1,5 +1,6 @@
 package com.gofundme.server.service
 
+import LogStreamResponse
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gofundme.server.requestHandler.StripeChargeRequest
 import org.springframework.beans.factory.annotation.Value
@@ -8,6 +9,7 @@ import com.stripe.Stripe
 import com.stripe.exception.AuthenticationException
 import com.stripe.exception.CardException
 import com.stripe.exception.InvalidRequestException
+import com.stripe.exception.StripeException
 
 import javax.annotation.PostConstruct
 import com.stripe.model.Charge
@@ -26,6 +28,12 @@ class StripeService {
 
     @Autowired
     lateinit var donationsService: DonationsService
+
+    @Autowired
+    lateinit var userInfoService: UserInfoService
+
+    @Autowired
+    lateinit var logStream: LogStream
 
     @PostConstruct
     fun init() {
@@ -46,12 +54,20 @@ class StripeService {
 
     fun charge(stripeChargeRequest: StripeChargeRequest,uid:Long,did:Long): String {
         val donationDetails=donationsService.getSpecificDonationsById(did)
+        val userDetails=userInfoService.getSpecificUserInfo(uid)
         val chargeParams: MutableMap<String, Any> = HashMap()
         chargeParams["amount"] = stripeChargeRequest.amount
         chargeParams["currency"] = "USD"
         chargeParams["description"] = donationDetails.details
-        chargeParams["source"] = generateCreditCardToken()
-        val stripeDetails=Charge.create(chargeParams)
+        chargeParams["source"] = generateCreditCardToken(stripeChargeRequest)
+        try {
+            val stripeDetails=Charge.create(chargeParams)
+        }
+        catch (e:StripeException){
+            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "StripeService",message = "$userDetails."))
+
+        }
+
         return "Done"
     }
 }
