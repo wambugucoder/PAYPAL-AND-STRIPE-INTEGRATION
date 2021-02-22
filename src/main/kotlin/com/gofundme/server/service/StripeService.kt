@@ -31,12 +31,12 @@ class StripeService {
     fun init() {
         Stripe.apiKey = secretKey
     }
-    fun generateCreditCardToken(): String {
+    fun generateCreditCardToken(stripeChargeRequest: StripeChargeRequest): String {
         val card: MutableMap<String, Any> = HashMap()
-        card["number"] = "4242424242424242"
-        card["exp_month"] = 2
-        card["exp_year"] = 2022
-        card["cvc"] = "314"
+        card["number"] =stripeChargeRequest.cardNumber
+        card["exp_month"] = stripeChargeRequest.exp_month
+        card["exp_year"] = stripeChargeRequest.exp_year
+        card["cvc"] = stripeChargeRequest.cvc
         val params: MutableMap<String, Any> = HashMap()
         params["card"] = card
 
