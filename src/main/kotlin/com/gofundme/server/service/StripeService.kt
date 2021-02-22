@@ -24,6 +24,9 @@ class StripeService {
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
+    @Autowired
+    lateinit var donationsService: DonationsService
+
     @PostConstruct
     fun init() {
         Stripe.apiKey = secretKey
@@ -41,13 +44,14 @@ class StripeService {
         return token.id
     }
 
-    fun charge(): String {
+    fun charge(stripeChargeRequest: StripeChargeRequest,uid:Long,did:Long): String {
+        val donationDetails=donationsService.getSpecificDonationsById(did)
         val chargeParams: MutableMap<String, Any> = HashMap()
-        chargeParams["amount"] = 100000
+        chargeParams["amount"] = stripeChargeRequest.amount
         chargeParams["currency"] = "USD"
-        chargeParams["description"] = "Trial"
+        chargeParams["description"] = donationDetails.details
         chargeParams["source"] = generateCreditCardToken()
-         Charge.create(chargeParams)
+        val stripeDetails=Charge.create(chargeParams)
         return "Done"
     }
 }

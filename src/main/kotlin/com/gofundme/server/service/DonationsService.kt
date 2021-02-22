@@ -36,11 +36,11 @@ class DonationsService {
         return donationsRepository.findAll()
     }
 
-    fun getSpecificDonationsById(id:Long): Optional<DonationsModel> {
+    fun getSpecificDonationsById(id:Long): DonationsModel {
       if(!donationsRepository.existsById(id)){
           logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "DonationsService",message = "Donation with id - $id does not exist"))
       }
-        return donationsRepository.findById(id)
+        return donationsRepository.findSpecificDonationById(id)
     }
 
     fun closeDonation(id:Long): ResponseEntity<ClosingDonationResponse> {

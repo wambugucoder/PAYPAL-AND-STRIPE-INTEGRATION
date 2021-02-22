@@ -67,10 +67,5 @@ class AuthenticationController {
         return authenticationService.loginUser(loginHandler)
 
     }
-    @PostMapping("/api/v1/auth/stripe")
-    fun paywithStripe(): String {
-        return stripeService.charge()
-
-    }
 
 }
