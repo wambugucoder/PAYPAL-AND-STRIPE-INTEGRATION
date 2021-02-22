@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct
 import com.stripe.model.Charge
 import com.stripe.model.Token
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 
 
 @Service
@@ -64,7 +65,8 @@ class StripeService {
             val stripeDetails=Charge.create(chargeParams)
         }
         catch (e:StripeException){
-            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "StripeService",message = "$userDetails."))
+            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "StripeService",message = "${userDetails.email} has input wrong card credentials"))
+            return ResponseEntity.badRequest().body()
 
         }
 
