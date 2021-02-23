@@ -48,7 +48,7 @@ class ScheduledTasksConfig {
     }
     @Async
     //remove unverified users every midnight.
-    @Scheduled(cron = "0 0/3 * * * * ?",zone = "Africa/Nairobi")
+    @Scheduled(cron = "0 0/3 * * * * ",zone = "Africa/Nairobi")
     fun removeUnverifiedUsers(){
         val allUserDetails=userInfoService.getAllUsers()
         if (allUserDetails.isNotEmpty()){
