@@ -30,17 +30,26 @@ class ScheduledTasksConfig {
     @Scheduled(cron = "0 0/10 * * * * ?",zone = "Africa/Nairobi")
     fun sendApprovalEmails(){
         val donations=donationsService.getAllDonations()
-        for (detail in donations ){
-            if(!detail.approvalEmailSent){
-                //send email
+        if (donations.isNotEmpty()){
+            for (detail in donations ){
+                if(!detail.approvalEmailSent){
+                    //send email
                     val donationDetails=DonationsModel(detail.details,detail.category,detail.target,detail.createdBy,detail.file)
-                emailService.sendAprrovalEmail(donationDetails)
-            //update to sent
-
+                    emailService.sendAprrovalEmail(donationDetails)
+                    //update to sent
+                    donationsService.notifyEmailHasBeenSent(detail.id)
+                    //log it to streaming server
+                    logStream.sendToLogConsole(LogStreamResponse(level = "SUCCESS",serviceAffected = "SchedulingTasksConfig",message = "Batch Processing for Approval Emails Done"))
+                }
             }
+
         }
 
-
+    }
+    @Async
+    //remove unverified users every midnight.
+    @Scheduled(cron = "0 0/10 * * * * ?",zone = "Africa/Nairobi")
+    fun removeUnverifiedUsers(){
 
     }
 

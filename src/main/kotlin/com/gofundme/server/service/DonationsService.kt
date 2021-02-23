@@ -90,8 +90,11 @@ class DonationsService {
         getDetails.donors.add(transactionDetails.initiator.id.toString())
         //SAVE UPDATED DONATION LIST
         donationsRepository.save(getDetails)
-
-
+    }
+    fun notifyEmailHasBeenSent(id:Long){
+        val donationDetails= donationsRepository.findSpecificDonationById(id)
+        donationDetails.approvalEmailSent=true
+        donationsRepository.save(donationDetails)
 
 
     }
