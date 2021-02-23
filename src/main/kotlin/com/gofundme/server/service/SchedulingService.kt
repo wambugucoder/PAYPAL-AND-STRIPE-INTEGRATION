@@ -15,7 +15,7 @@ class SchedulingService {
 
 
 
-    fun saveDonationToEmailSents(donationsModel: DonationsModel){
+    fun saveDonationToEmailSent(donationsModel: DonationsModel){
 
         hashOperations.put("DONATION_EMAIL","${donationsModel.id}",donationsModel)
 
