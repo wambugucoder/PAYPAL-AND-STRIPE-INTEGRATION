@@ -1,7 +1,9 @@
 package com.gofundme.server.configs
 
 import LogStreamResponse
+import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.service.DonationsService
+import com.gofundme.server.service.EmailService
 import com.gofundme.server.service.LogStream
 import com.gofundme.server.service.SchedulingService
 import org.springframework.beans.factory.annotation.Autowired
@@ -21,7 +23,7 @@ class ScheduledTasksConfig {
     lateinit var donationsService: DonationsService
 
     @Autowired
-    lateinit var schedulingService: SchedulingService
+    lateinit var emailService: EmailService
 
     @Async
     // every 10 minutes send approval emails in bulk
@@ -31,8 +33,10 @@ class ScheduledTasksConfig {
         for (detail in donations ){
             if(!detail.approvalEmailSent){
                 //send email
+                    val donationDetails=DonationsModel(detail.details,detail.category,detail.target,detail.createdBy,detail.file)
+                emailService.sendAprrovalEmail(donationDetails)
+            //update to sent
 
-                //update to sent
             }
         }
 

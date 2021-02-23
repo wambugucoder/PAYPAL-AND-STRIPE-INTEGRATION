@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository
 interface DonationsRepository: JpaRepository<DonationsModel,Long> {
     fun findSpecificDonationById(id:Long):DonationsModel
 
+
 }
