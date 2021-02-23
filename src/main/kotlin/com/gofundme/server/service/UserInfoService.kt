@@ -77,4 +77,7 @@ class UserInfoService {
         userRepository.save(userDetails)
         return ResponseEntity.ok().body(MakeAdminResponse(message = "${userDetails.email} Has Been Made An Admin",httpStatus = HttpStatus.OK))
     }
+    fun removeUnverifiedUser(id: Long){
+        userRepository.deleteById(id)
+    }
 }

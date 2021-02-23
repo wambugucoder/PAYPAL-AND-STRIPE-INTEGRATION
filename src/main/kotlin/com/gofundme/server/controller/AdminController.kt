@@ -32,7 +32,7 @@ class AdminController {
 
     }
     @GetMapping("/api/v1/admin/specific-user/{id}")
-    fun getSpecificUser(@PathVariable id:Long): Optional<UserModel> {
+    fun getSpecificUser(@PathVariable id:Long): UserModel {
         return userInfoService.getSpecificUserInfo(id)
 
     }
