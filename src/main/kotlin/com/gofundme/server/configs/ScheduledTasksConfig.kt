@@ -25,10 +25,16 @@ class ScheduledTasksConfig {
 
     @Async
     // every 10 minutes send aprroval emails in bulk
-    @Scheduled(cron = "0 0/30 * * * * ?",zone = "Africa/Nairobi")
+    @Scheduled(cron = "0 0/10 * * * * ?",zone = "Africa/Nairobi")
     fun sendApprovalEmails(){
         val donations=donationsService.getAllDonations()
-        val emailsent= schedulingService.retrieveDonationsWhereEmailsWereSent()
+        for (detail in donations ){
+            if(!detail.approvalEmailSent){
+                //send email
+
+                //update to sent
+            }
+        }
 
 
 
