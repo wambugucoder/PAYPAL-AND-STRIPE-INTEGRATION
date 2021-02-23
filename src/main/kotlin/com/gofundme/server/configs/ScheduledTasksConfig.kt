@@ -24,7 +24,7 @@ class ScheduledTasksConfig {
     lateinit var schedulingService: SchedulingService
 
     @Async
-    // every 10 minutes send aprroval emails in bulk
+    // every 10 minutes send approval emails in bulk
     @Scheduled(cron = "0 0/10 * * * * ?",zone = "Africa/Nairobi")
     fun sendApprovalEmails(){
         val donations=donationsService.getAllDonations()
