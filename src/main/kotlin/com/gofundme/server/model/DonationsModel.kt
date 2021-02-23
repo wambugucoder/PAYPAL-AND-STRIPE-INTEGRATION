@@ -38,6 +38,9 @@ class DonationsModel:Serializable {
     var approved:Boolean=false
 
     @Column(nullable = false)
+    var approvalEmailSent:Boolean=false
+
+    @Column(nullable = false)
     var target:String
 
     @Column(nullable = false)
@@ -89,6 +92,7 @@ class DonationsModel:Serializable {
       this.approved=approved
       this.file=file
       this.transactions=transactions
+      this. approvalEmailSent= approvalEmailSent
   }
 
 
