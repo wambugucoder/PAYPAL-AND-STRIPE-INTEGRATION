@@ -27,7 +27,7 @@ class ScheduledTasksConfig {
 
     @Async
     // every 10 minutes send approval emails in bulk
-    @Scheduled(cron = "0 0/3 * * * * ?",zone = "Africa/Nairobi")
+    @Scheduled(cron = "0 0/3 * * * *",zone = "Africa/Nairobi")
     fun sendApprovalEmails(){
         val donations=donationsService.getAllDonations()
         if (donations.isNotEmpty()){

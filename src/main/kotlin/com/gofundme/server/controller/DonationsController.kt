@@ -41,7 +41,7 @@ class DonationsController {
     }
 
     @GetMapping("/api/v1/users/{uid}/donations/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun getSpecificDonation(@PathVariable uid: Long, @PathVariable did: Long): Optional<DonationsModel> {
+    fun getSpecificDonation(@PathVariable uid: Long, @PathVariable did: Long): DonationsModel {
         logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "DonationController",message = "User with ID -$uid is accessing a donation with ID -$did"))
         return donationsService.getSpecificDonationsById(did)
 
