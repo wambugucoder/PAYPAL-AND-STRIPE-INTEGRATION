@@ -3,6 +3,7 @@ package com.gofundme.server
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gofundme.server.model.AddressModel
 import com.gofundme.server.model.UserModel
+import com.gofundme.server.requestHandler.RegisterHandler
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.condition.EnabledOnJre
 import org.junit.jupiter.api.condition.JRE
@@ -37,26 +38,50 @@ class ServerApplicationTests {
     @Autowired
     lateinit var objectMapper: ObjectMapper
 
+
+
     @Test
     @Order(1)
-    @DisplayName("/api/v1/auth/register")
+    @DisplayName("/api/v1/auth/register  -Should Pass")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun registerUser(){
 
         // GIVEN
-        val addressDetails=AddressModel(country = "Kenya",city = "Nairobi")
-        val userDetails=UserModel(username = "abcdef",email = "abc@gmail.com",password = "123456",address = addressDetails)
-        val jsonBody=objectMapper.writeValueAsString(userDetails)
+        val registrationDetails= RegisterHandler(username = "jos123",email = "jos@gmail.com",password = "123456",country = "Kenya",city = "Nairobi")
+        val jsonBody=objectMapper.writeValueAsString(registrationDetails)
 
         // WHEN
-        val finalResults=mockMvc.perform(
+        mockMvc.perform(
             MockMvcRequestBuilders.post("/api/v1/auth/register").secure(true).content(jsonBody).contentType(MediaType.APPLICATION_JSON).accept(
                 MediaType.APPLICATION_JSON)
         )
         // EXPECTATIONS
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
-            //.andReturn()
+
+
+    }
+    @Test
+    @Order(2)
+    @DisplayName("/api/v1/auth/register -Should Fail")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun doNotRegisterUser(){
+
+        //GIVEN WRONG DETAILS
+        val registrationDetails= RegisterHandler(username = "23",email = "jos.com",password = "1",country = "Kenya",city = "Nairobi")
+        val jsonBody=objectMapper.writeValueAsString(registrationDetails)
+
+        // WHEN
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/auth/register").secure(true).content(jsonBody).contentType(MediaType.APPLICATION_JSON).accept(
+                MediaType.APPLICATION_JSON)
+        )
+
+            // EXPECTATIONS
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+
+
+
 
     }
 
