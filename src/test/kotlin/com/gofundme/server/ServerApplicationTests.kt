@@ -123,6 +123,7 @@ class ServerApplicationTests {
     @Test
     @Order(5)
     @DisplayName("/api/v1/auth/login -Expect status 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun loginUser(){
 
         //GIVEN CORRECT CREDENTIALS
@@ -140,6 +141,7 @@ class ServerApplicationTests {
     @Test
     @Order(6)
     @DisplayName("/api/v1/auth/login -Expect status 400")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun doNotLoginUser(){
 
         //GIVEN CORRECT CREDENTIALS
@@ -151,6 +153,12 @@ class ServerApplicationTests {
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
             .andReturn()
+    }
+    @Test
+    @Order(7)
+
+    fun getAllUsers(){
+
     }
 
 }
