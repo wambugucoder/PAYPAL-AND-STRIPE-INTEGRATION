@@ -3,6 +3,7 @@ package com.gofundme.server
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gofundme.server.model.AddressModel
 import com.gofundme.server.model.UserModel
+import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.LoginHandler
 import com.gofundme.server.requestHandler.RegisterHandler
 import com.gofundme.server.service.JwtService
@@ -17,7 +18,6 @@ import org.springframework.http.MediaType
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
@@ -41,7 +41,11 @@ class ServerApplicationTests {
     lateinit var objectMapper: ObjectMapper
 
     @Autowired
-    lateinit var jwtService: JwtService
+    lateinit var jwtService:JwtService
+
+    @Autowired
+    lateinit var userRepository: UserRepository
+
 
 
 
@@ -160,10 +164,14 @@ class ServerApplicationTests {
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun getAllUsers(){
         //GIVEN A TOKEN
+        val userDetails=userRepository.findByEmail("jos@gmail.com")
+
+        var jwtToken=jwtService.generateLoginToken(userDetails)
+
         //WHEN
         mockMvc.perform(
             MockMvcRequestBuilders.get("/api/v1/admin/all-users").secure(true).contentType(MediaType.APPLICATION_JSON).accept(
-                MediaType.APPLICATION_JSON)
+                MediaType.APPLICATION_JSON).header("Authorization", "Bearer $jwtToken")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
