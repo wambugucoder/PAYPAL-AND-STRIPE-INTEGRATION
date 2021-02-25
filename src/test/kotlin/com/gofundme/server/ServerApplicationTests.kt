@@ -110,7 +110,7 @@ class ServerApplicationTests {
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun doNotActivateEmail(){
         //GIVEN WRONG TOKEN
-        val token=jwtService.generateActivationToken(email = "abc@gmail.com")
+        val token=jwtService.generateActivationToken(email = "jos@gmail.com")
 
         //WHEN
         mockMvc.perform (
