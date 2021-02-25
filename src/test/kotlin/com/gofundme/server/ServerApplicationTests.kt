@@ -42,7 +42,7 @@ class ServerApplicationTests {
 
     @Test
     @Order(1)
-    @DisplayName("/api/v1/auth/register  -Should Pass")
+    @DisplayName("/api/v1/auth/register  -Expect status 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun registerUser(){
 
@@ -63,7 +63,7 @@ class ServerApplicationTests {
     }
     @Test
     @Order(2)
-    @DisplayName("/api/v1/auth/register -Should Fail")
+    @DisplayName("/api/v1/auth/register -Expect status 400")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun doNotRegisterUser(){
 
@@ -79,9 +79,11 @@ class ServerApplicationTests {
 
             // EXPECTATIONS
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
-
-
-
+    }
+    @Test
+    @Order(3)
+    @DisplayName("/api/v1/auth/login -Expect status 200")
+    fun activateEmail(){
 
     }
 
