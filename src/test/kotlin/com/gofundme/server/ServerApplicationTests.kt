@@ -156,8 +156,17 @@ class ServerApplicationTests {
     }
     @Test
     @Order(7)
-
+    @DisplayName("/api/v1/admin/all-users -Expect status 400")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun getAllUsers(){
+        //GIVEN A TOKEN
+        //WHEN
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/admin/all-users").secure(true).contentType(MediaType.APPLICATION_JSON).accept(
+                MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
     }
 
