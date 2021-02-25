@@ -102,5 +102,21 @@ class ServerApplicationTests {
             .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
             .andReturn()
     }
+    @Test
+    @Order(4)
+    @DisplayName("/api/v1/auth/login -Expect status 400")
+    fun dontActivateEmail(){
+        //GIVEN A TOKEN
+        val token=jwtService.generateActivationToken(email = "jos@gmail.com")
+
+        //WHEN
+        mockMvc.perform (
+            MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(true).accept( MediaType.APPLICATION_JSON)
+        )
+            //EXPECTATIONS
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
+            .andReturn()
+    }
 
 }
