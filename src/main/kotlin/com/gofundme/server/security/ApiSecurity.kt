@@ -39,7 +39,7 @@ class ApiSecurity :WebSecurityConfigurerAdapter(){
                 // STRICT AUTHORIZATION AND AUTHENTICATION
             ?.authorizeRequests()
             ?.antMatchers("/api/v1/auth/**")?.permitAll()
-            ?.antMatchers("/api/v1/admin/**")?.hasRole("ADMIN")
+           // ?.antMatchers("/api/v1/admin/**")?.hasRole("ADMIN")
             ?.anyRequest()?.authenticated()
             ?.and()
                 // JWT-TOKEN SESSION
