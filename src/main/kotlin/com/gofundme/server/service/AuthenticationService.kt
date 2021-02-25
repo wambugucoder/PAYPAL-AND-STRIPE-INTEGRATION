@@ -123,7 +123,7 @@ class AuthenticationService {
         val userDetails=userRepository.findByEmail(loginHandler.email)
         val jwtToken = jwtService.generateLoginToken(userDetails)
         logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "AuthenticationService",message = "${loginHandler.email }  Logged In Successfully"))
-        return ResponseEntity.badRequest().body(LoginResponse(message = "Logged In Successfully",HttpStatus.OK, token = jwtToken))
+        return ResponseEntity.ok().body(LoginResponse(message = "Logged In Successfully",HttpStatus.OK, token = jwtToken))
 
 
 

@@ -134,6 +134,7 @@ class ServerApplicationTests {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
+            .andExpect(MockMvcResultMatchers.jsonPath("$.token").exists())
             .andReturn()
     }
     @Test
