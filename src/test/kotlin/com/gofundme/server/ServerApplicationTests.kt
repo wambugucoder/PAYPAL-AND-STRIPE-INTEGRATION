@@ -3,6 +3,7 @@ package com.gofundme.server
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gofundme.server.model.AddressModel
 import com.gofundme.server.model.UserModel
+import com.gofundme.server.requestHandler.LoginHandler
 import com.gofundme.server.requestHandler.RegisterHandler
 import com.gofundme.server.service.JwtService
 import org.junit.jupiter.api.*
@@ -96,7 +97,7 @@ class ServerApplicationTests {
 
         //WHEN
         mockMvc.perform (
-        MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(true).accept( MediaType.APPLICATION_JSON)
+        MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(true).contentType(MediaType.APPLICATION_JSON).accept( MediaType.APPLICATION_JSON)
         )
         //EXPECTATIONS
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -113,10 +114,41 @@ class ServerApplicationTests {
 
         //WHEN
         mockMvc.perform (
-            MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(true).accept( MediaType.APPLICATION_JSON)
+            MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(true).contentType(MediaType.APPLICATION_JSON).accept( MediaType.APPLICATION_JSON)
         )
             //EXPECTATIONS
             .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andReturn()
+    }
+    @Test
+    @Order(5)
+    @DisplayName("/api/v1/auth/login -Expect status 200")
+    fun loginUser(){
+
+        //GIVEN CORRECT CREDENTIALS
+        val loginDetails=objectMapper.writeValueAsString(LoginHandler(email = "jos@gmail.com",password = "123456"))
+        //WHEN
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/auth/login").secure(true).content(loginDetails).contentType(MediaType.APPLICATION_JSON).accept(
+                MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
+            .andReturn()
+    }
+    @Test
+    @Order(6)
+    @DisplayName("/api/v1/auth/login -Expect status 400")
+    fun doNotLoginUser(){
+
+        //GIVEN CORRECT CREDENTIALS
+        val loginDetails=objectMapper.writeValueAsString(LoginHandler(email = "abc@gmail.com",password = "123456"))
+        //WHEN
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/auth/login").secure(true).content(loginDetails).contentType(MediaType.APPLICATION_JSON).accept(
+                MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
             .andReturn()
     }
 
