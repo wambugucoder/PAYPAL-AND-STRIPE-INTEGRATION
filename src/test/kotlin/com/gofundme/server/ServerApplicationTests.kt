@@ -101,10 +101,6 @@ class ServerApplicationTests {
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
             .andReturn()
-
-
-
-
     }
 
 }
