@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.gofundme.server.model.AddressModel
 import com.gofundme.server.model.UserModel
 import com.gofundme.server.requestHandler.RegisterHandler
+import com.gofundme.server.service.JwtService
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.condition.EnabledOnJre
 import org.junit.jupiter.api.condition.JRE
@@ -37,6 +38,9 @@ class ServerApplicationTests {
 
     @Autowired
     lateinit var objectMapper: ObjectMapper
+
+    @Autowired
+    lateinit var jwtService: JwtService
 
 
 
@@ -84,6 +88,10 @@ class ServerApplicationTests {
     @Order(3)
     @DisplayName("/api/v1/auth/login -Expect status 200")
     fun activateEmail(){
+        //GIVEN A TOKEN
+        val token=jwtService.generateActivationToken(email = "jos@gmail.com")
+
+
 
     }
 

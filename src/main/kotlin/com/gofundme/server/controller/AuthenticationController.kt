@@ -46,14 +46,13 @@ class AuthenticationController {
 
     @PutMapping("/api/v1/auth/activate/{token}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun activateUserAccount(@PathVariable token:String): ResponseEntity<AccountActivationResponse> {
-        if (token.isNullOrEmpty()){
+        return if (token.isNullOrEmpty()){
             logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "authenticationController",message = "No Token was Provided for Account Activation"))
-            return ResponseEntity.badRequest().body(AccountActivationResponse(message = "No Token Has been Provided",httpStatus = HttpStatus.BAD_REQUEST))
+            ResponseEntity.badRequest().body(AccountActivationResponse(message = "No Token Has been Provided",httpStatus = HttpStatus.BAD_REQUEST))
+        } else{
+            logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "authenticationController",message = "About to activate user with token $token"))
+            authenticationService.activateUserAccount(token)
         }
-        else{
-        logStream.sendToLogConsole(LogStreamResponse(level = "INFO",serviceAffected = "authenticationController",message = "About to activate user with token $token"))
-        return authenticationService.activateUserAccount(token)
-            }
 
     }
 
