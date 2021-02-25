@@ -88,7 +88,7 @@ class ServerApplicationTests {
     }
     @Test
     @Order(3)
-    @DisplayName("/api/v1/auth/login -Expect status 200")
+    @DisplayName("/api/v1/auth/activate/token -Expect status 200")
     fun activateEmail(){
         //GIVEN A TOKEN
         val token=jwtService.generateActivationToken(email = "jos@gmail.com")
@@ -104,18 +104,17 @@ class ServerApplicationTests {
     }
     @Test
     @Order(4)
-    @DisplayName("/api/v1/auth/login -Expect status 400")
+    @DisplayName("/api/v1/auth/activate/token -Expect status 400")
     fun dontActivateEmail(){
-        //GIVEN A TOKEN
-        val token=jwtService.generateActivationToken(email = "jos@gmail.com")
+        //GIVEN WRONG TOKEN
+        val token=jwtService.generateActivationToken(email = "abc@gmail.com")
 
         //WHEN
         mockMvc.perform (
             MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(true).accept( MediaType.APPLICATION_JSON)
         )
             //EXPECTATIONS
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andReturn()
     }
 
