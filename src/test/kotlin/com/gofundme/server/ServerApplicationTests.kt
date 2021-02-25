@@ -106,6 +106,7 @@ class ServerApplicationTests {
     @Test
     @Order(4)
     @DisplayName("/api/v1/auth/activate/token -Expect status 400")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun doNotActivateEmail(){
         //GIVEN WRONG TOKEN
         val token=jwtService.generateActivationToken(email = "abc@gmail.com")
