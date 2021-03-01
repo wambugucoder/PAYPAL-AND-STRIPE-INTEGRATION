@@ -50,7 +50,7 @@ class AdminController {
         return userInfoService.updateUserDetails(id,updateUserRequest)
 
     }
-    @PutMapping("/api/v1/admin/makeAdmin/{id}")
+    @PutMapping("/api/v1/moderator/makeAdmin/{id}")
     fun makeUserAdmin(@PathVariable id:Long): ResponseEntity<MakeAdminResponse> {
         return userInfoService.makeUserAdmin(id)
 

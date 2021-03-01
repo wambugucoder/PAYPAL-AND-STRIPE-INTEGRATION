@@ -160,7 +160,28 @@ class ServerApplicationTests {
     }
     @Test
     @Order(7)
-    @DisplayName("/api/v1/admin/all-users -Expect status 400")
+    @DisplayName("/api/v1/moderator/makeAdmin/{id} -Expect status 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun makeAdmin(){
+        //GIVEN A TOKEN AND USER ID
+        val userDetails=userRepository.findByEmail("jos@gmail.com")
+
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+
+        //WHEN
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/moderator/makeAdmin/${userDetails.id}")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",jwtToken)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+    }
+
+    @Test
+    @Order(8)
+    @DisplayName("/api/v1/admin/all-users -Expect status 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun getAllUsers(){
         //GIVEN A TOKEN
@@ -177,5 +198,59 @@ class ServerApplicationTests {
             .andReturn()
 
     }
+    @Test
+    @Order(9)
+    @DisplayName("/api/v1/admin/all-users -Expect status 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun failToFetchAllUsers(){
+        //GIVEN NO TOKEN
+        //WHEN
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/admin/all-users").secure(true).contentType(MediaType.APPLICATION_JSON).accept(
+                MediaType.APPLICATION_JSON)
+        )
+            .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+            .andReturn()
+
+    }
+    @Test
+    @Order(10)
+    @DisplayName("/api/v1/admin/specific-user/{id} -Expect status 200")
+    fun getSpecificUserAsAdmin(){
+        //GIVEN TOKEN AND ADMIN CREDENTIALS
+        val userDetails=userRepository.findByEmail("jos@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+
+        //PERFORM THE GET REQUEST
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/admin/specific-user/${userDetails.id}")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",jwtToken)
+        )
+                //EXPECTATIONS
+            .andExpect(MockMvcResultMatchers.status().isOk)
+    }
+    @Test
+    @Order(11)
+    @DisplayName("/api/v1/admin/specific-user/{id} -Expect status 300 or 400")
+    fun doNotGetSpecificUser(){
+        //GIVEN NO TOKEN AND ASSUMING USER HAS ROLE USER
+        val userDetails=userRepository.findByEmail("jos@gmail.com")
+        // PERFORM THE GET REQUEST
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/admin/specific-user/${userDetails.id}")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+
+        )
+            //EXPECTATIONS
+            .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+
+
+    }
+
 
 }
