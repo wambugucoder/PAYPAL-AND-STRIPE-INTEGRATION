@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -27,6 +28,7 @@ class AdminController {
     lateinit var logStream: LogStream
 
     @GetMapping("/api/v1/admin/all-users",consumes = [MediaType.APPLICATION_JSON_VALUE],produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getAllUsers(): MutableList<UserModel> {
         return userInfoService.getAllUsers()
 

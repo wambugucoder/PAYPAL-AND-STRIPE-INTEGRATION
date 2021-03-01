@@ -27,7 +27,7 @@ class UserModel:Serializable {
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
-    var roles:UserRoles=UserRoles.USER
+    var roles:UserRoles=UserRoles.ROLE_USER
 
     @Column(nullable = false)
     var password:String
