@@ -118,14 +118,14 @@ class ServerApplicationTests {
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun doNotActivateEmail(){
         //GIVEN WRONG TOKEN
-        val token=null
+        val token=jwtService.generateActivationToken(email = "jos@gmail.com")
 
         //WHEN
         mockMvc.perform (
-            MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(true).contentType(MediaType.APPLICATION_JSON).accept( MediaType.APPLICATION_JSON)
+            MockMvcRequestBuilders.put("/api/v1/auth/activate/$token").secure(false).contentType(MediaType.APPLICATION_JSON).accept( MediaType.APPLICATION_JSON)
         )
             //EXPECTATIONS
-            .andExpect(MockMvcResultMatchers.status().isBadRequest)
+            .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
             .andReturn()
     }
     @Test
@@ -191,7 +191,7 @@ class ServerApplicationTests {
         //GIVEN A TOKEN
         val userDetails=userRepository.findByEmail("jos@gmail.com")
 
-        var jwtToken=jwtService.generateLoginToken(userDetails)
+        val jwtToken=jwtService.generateLoginToken(userDetails)
 
         //WHEN
         mockMvc.perform(
@@ -282,7 +282,7 @@ class ServerApplicationTests {
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun failToUpdateWithPartialDetails(){
         //GIVEN TOKEN AND ADMIN CREDENTIALS
-        val userDetails=userRepository.findByEmail("jos@gmail.com")
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
         val detailsToUpdate = objectMapper.writeValueAsString(UpdateUserRequest("Wambugu","abc@gmail.com"))
 
@@ -366,8 +366,8 @@ class ServerApplicationTests {
                 .header("Authorization","Bearer $jwtToken")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
-
     }
+
 
 
 
