@@ -1,8 +1,6 @@
 package com.gofundme.server
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.gofundme.server.model.AddressModel
-import com.gofundme.server.model.UserModel
 import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.LoginHandler
 import com.gofundme.server.requestHandler.RegisterHandler
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
+import org.springframework.mock.web.MockMultipartFile
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.TestPropertySource
 import org.springframework.test.context.junit.jupiter.SpringExtension
@@ -288,6 +287,25 @@ class ServerApplicationTests {
                 .header("Authorization",jwtToken)
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+
+    }
+    @Test
+    @Order(14)
+    @DisplayName("/api/v1/users/{id}/create-donation - Expect status 200")
+    fun createDonation(){
+        //GIVEN TOKEN AND USER CREDENTIALS
+        val userDetails=userRepository.findByEmail("jos@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+
+        //CREATE TEST FILE
+        val file = MockMultipartFile(
+            "file",
+            "hello.txt",
+            MediaType.TEXT_PLAIN_VALUE,
+            "Hello, World!".toByteArray()
+        )
+
+
 
 
     }
