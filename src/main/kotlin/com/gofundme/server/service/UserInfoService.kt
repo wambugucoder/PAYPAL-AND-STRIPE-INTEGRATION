@@ -71,7 +71,7 @@ class UserInfoService {
         if (userDetails.roles==UserRoles.ROLE_ADMIN){
             return ResponseEntity.badRequest().body(MakeAdminResponse(message = "The User Is Already An Admin",httpStatus = HttpStatus.BAD_REQUEST))
         }
-        userDetails.roles= UserRoles.ROLE_USER
+        userDetails.roles= UserRoles.ROLE_ADMIN
 
         logStream.sendToLogConsole(LogStreamResponse(level = "SUCCESS",serviceAffected = "UserInfoService",message = "${userDetails.email} Has Been Promoted To Admin"))
         userRepository.save(userDetails)
