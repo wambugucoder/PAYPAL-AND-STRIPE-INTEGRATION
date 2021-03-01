@@ -1,6 +1,7 @@
 package com.gofundme.server
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.gofundme.server.repository.DonationsRepository
 import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.LoginHandler
 import com.gofundme.server.requestHandler.RegisterHandler
@@ -45,6 +46,9 @@ class ServerApplicationTests {
 
     @Autowired
     lateinit var userRepository: UserRepository
+
+    @Autowired
+    lateinit var donationsRepository:DonationsRepository
 
 
 
@@ -336,7 +340,7 @@ class ServerApplicationTests {
         mockMvc.perform(
             MockMvcRequestBuilders.get("/api/v1/users/${userDetails.id}/all-donations")
                 .secure(true)
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer $jwtToken")
         )
@@ -348,6 +352,20 @@ class ServerApplicationTests {
     @DisplayName("/api/v1/users/{uid}/donations/{did} -Expect 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun getSpecificDonationById(){
+        //GIVEN A TOKEN,USER ID,DONATION ID
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+        val donationDetails=donationsRepository.findDonationByDetails("sales")
+
+        //PERFORM GET REQUEST FOR SPECIFIC DONATION
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/users/${userDetails.id}/donations/${donationDetails.id} ")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer $jwtToken")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
 
     }
 
