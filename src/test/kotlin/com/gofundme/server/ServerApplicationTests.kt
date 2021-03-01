@@ -304,11 +304,19 @@ class ServerApplicationTests {
             MediaType.TEXT_PLAIN_VALUE,
             "Hello, World!".toByteArray()
         )
+        //PERFORM POST REQUEST
+        mockMvc.perform(
+            MockMvcRequestBuilders.multipart("/api/v1/users/${userDetails.id}/create-donation?details=sales&category=sales&target=23")
+                .file(file)
+                .secure(true)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",jwtToken)
 
-
-
-
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
     }
+
 
 
 }
