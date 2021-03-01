@@ -28,7 +28,6 @@ class AdminController {
     lateinit var logStream: LogStream
 
     @GetMapping("/api/v1/admin/all-users",consumes = [MediaType.APPLICATION_JSON_VALUE],produces = [MediaType.APPLICATION_JSON_VALUE])
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     fun getAllUsers(): MutableList<UserModel> {
         return userInfoService.getAllUsers()
 
