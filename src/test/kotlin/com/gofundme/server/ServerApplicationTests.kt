@@ -294,7 +294,7 @@ class ServerApplicationTests {
     @DisplayName("/api/v1/users/{id}/create-donation - Expect status 200")
     fun createDonation(){
         //GIVEN TOKEN AND USER CREDENTIALS
-        val userDetails=userRepository.findByEmail("jos@gmail.com")
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
 
         //CREATE TEST FILE
