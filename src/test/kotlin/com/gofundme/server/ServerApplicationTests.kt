@@ -6,6 +6,7 @@ import com.gofundme.server.model.UserModel
 import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.LoginHandler
 import com.gofundme.server.requestHandler.RegisterHandler
+import com.gofundme.server.requestHandler.UpdateUserRequest
 import com.gofundme.server.service.JwtService
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.condition.EnabledOnJre
@@ -248,7 +249,29 @@ class ServerApplicationTests {
         )
             //EXPECTATIONS
             .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+    }
+    @Test
+    @Order(12)
+    @DisplayName("/api/v1/admin/update-user/{id} -Expect status 200")
+    fun updateUserDetails(){
+        //GIVEN TOKEN AND ADMIN CREDENTIALS
+        val userDetails=userRepository.findByEmail("jos@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+        val detailsToUpdate = objectMapper.writeValueAsString(UpdateUserRequest("Wambugu","abc@gmail.com"))
 
+        //PERFORM THE PUT REQUEST
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/admin/update-user/${userDetails.id}")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(detailsToUpdate)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",jwtToken)
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+
+    }
+    fun failToUpdateWithPartialDetails(){
 
     }
 
