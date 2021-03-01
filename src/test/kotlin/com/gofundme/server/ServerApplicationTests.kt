@@ -343,6 +343,13 @@ class ServerApplicationTests {
             .andExpect(MockMvcResultMatchers.status().isOk)
 
     }
+    @Test
+    @Order(16)
+    @DisplayName("/api/v1/users/{uid}/donations/{did} -Expect 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun getSpecificDonationById(){
+
+    }
 
 
 
