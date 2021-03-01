@@ -209,7 +209,7 @@ class ServerApplicationTests {
             MockMvcRequestBuilders.get("/api/v1/admin/all-users").secure(true).contentType(MediaType.APPLICATION_JSON).accept(
                 MediaType.APPLICATION_JSON)
         )
-            .andExpect(MockMvcResultMatchers.status().is3xxRedirection)
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
             .andReturn()
 
     }

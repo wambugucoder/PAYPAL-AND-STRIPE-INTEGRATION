@@ -68,10 +68,10 @@ class UserInfoService {
     }
     fun makeUserAdmin(id: Long): ResponseEntity<MakeAdminResponse> {
         val userDetails=userRepository.findUserById(id)
-        if (userDetails.roles==UserRoles.ROLE_ADMIN){
+        if (userDetails.roles==UserRoles.ADMIN){
             return ResponseEntity.badRequest().body(MakeAdminResponse(message = "The User Is Already An Admin",httpStatus = HttpStatus.BAD_REQUEST))
         }
-        userDetails.roles= UserRoles.ROLE_USER
+        userDetails.roles= UserRoles.USER
 
         logStream.sendToLogConsole(LogStreamResponse(level = "SUCCESS",serviceAffected = "UserInfoService",message = "${userDetails.email} Has Been Promoted To Admin"))
         userRepository.save(userDetails)
