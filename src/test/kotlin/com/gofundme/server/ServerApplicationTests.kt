@@ -174,7 +174,7 @@ class ServerApplicationTests {
                 .secure(true)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",jwtToken)
+                .header("Authorization","Bearer $jwtToken")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
     }
@@ -200,7 +200,7 @@ class ServerApplicationTests {
     }
     @Test
     @Order(9)
-    @DisplayName("/api/v1/admin/all-users -Expect status 200")
+    @DisplayName("/api/v1/admin/all-users -Expect status 300")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun failToFetchAllUsers(){
         //GIVEN NO TOKEN
@@ -227,7 +227,7 @@ class ServerApplicationTests {
                 .secure(true)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",jwtToken)
+                .header("Authorization","Bearer $jwtToken")
         )
                 //EXPECTATIONS
             .andExpect(MockMvcResultMatchers.status().isOk)
@@ -265,7 +265,7 @@ class ServerApplicationTests {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(detailsToUpdate)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",jwtToken)
+                .header("Authorization","Bearer $jwtToken")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
 
@@ -284,7 +284,7 @@ class ServerApplicationTests {
                 .secure(true)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization",jwtToken)
+                .header("Authorization","Bearer $jwtToken")
         )
             .andExpect(MockMvcResultMatchers.status().is4xxClientError)
 
