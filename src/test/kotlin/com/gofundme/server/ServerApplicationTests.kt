@@ -279,6 +279,17 @@ class ServerApplicationTests {
         val userDetails=userRepository.findByEmail("jos@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
 
+        //PERFORM PUT REQUEST WITH NO DATA
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/admin/update-user/${userDetails.id}")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization",jwtToken)
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+
+
     }
 
 
