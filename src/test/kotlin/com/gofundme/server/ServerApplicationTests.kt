@@ -271,7 +271,13 @@ class ServerApplicationTests {
             .andExpect(MockMvcResultMatchers.status().isOk)
 
     }
+    @Test
+    @Order(13)
+    @DisplayName("/api/v1/admin/update-user/{id} -Expect status 300 or 400")
     fun failToUpdateWithPartialDetails(){
+        //GIVEN TOKEN AND ADMIN CREDENTIALS
+        val userDetails=userRepository.findByEmail("jos@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
 
     }
 
