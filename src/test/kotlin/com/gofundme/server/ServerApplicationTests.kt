@@ -367,6 +367,12 @@ class ServerApplicationTests {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
     }
+    @Test
+    @Order(17)
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun payWithPaypal(){
+
+    }
 
 
 
