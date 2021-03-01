@@ -328,6 +328,19 @@ class ServerApplicationTests {
     @DisplayName("/api/v1/users/{id}/all-donations - Expect 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun getAllDonations(){
+        //GIVEN A TOKEN
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+
+       //PERFORM THE GET REQUEST
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/users/${userDetails.id}/all-donations")
+                .secure(true)
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer $jwtToken")
+        )
+
 
     }
 
