@@ -28,8 +28,6 @@ class AuthenticationController {
     @Autowired
     lateinit var logStream: LogStream
 
-    @Autowired
-    lateinit var stripeService: StripeService
 
     @PostMapping("/api/v1/auth/register",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun registerUser(@RequestBody @Valid registerHandler: RegisterHandler,bindingResult: BindingResult): ResponseEntity<RegisterResponse> {
