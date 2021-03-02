@@ -18,7 +18,7 @@ class TransactionsModel: Serializable {
     @Column(nullable = false)
     var amountDonated:Double
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = [CascadeType.ALL])
     @JoinColumn(name = "donation_id",referencedColumnName = "id")
     @JsonBackReference
     var donation:DonationsModel

@@ -64,9 +64,9 @@ class DonationsModel:Serializable {
     @JsonManagedReference
     var createdBy:UserModel
 
-    @OneToMany(orphanRemoval = true,cascade = [CascadeType.ALL])
+    @OneToMany(cascade = [CascadeType.ALL])
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+   // @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
     var transactions:List<TransactionsModel>? = emptyList()
 
