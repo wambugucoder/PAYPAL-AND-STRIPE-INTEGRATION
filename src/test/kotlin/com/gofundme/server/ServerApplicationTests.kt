@@ -369,8 +369,26 @@ class ServerApplicationTests {
     }
     @Test
     @Order(17)
+    @DisplayName("/api/v1/{uid}/{did}/paypal/make-pay -Expect 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun payWithPaypal(){
+        // GIVEN A TOKEN,USER ID,DONATION ID
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+        val donationDetails=donationsRepository.findDonationByDetails("sales")
+
+        // PERFORM THE PAYMENT PROCEDURE
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/${userDetails.id}/${donationDetails.id}/paypal/make-pay")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer $jwtToken")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
+            .andReturn()
+
 
     }
 
