@@ -315,7 +315,7 @@ class ServerApplicationTests {
         )
         //PERFORM POST REQUEST
         mockMvc.perform(
-            MockMvcRequestBuilders.multipart("/api/v1/users/${userDetails.id}/create-donation?details=sales&category=sales&target=23")
+            MockMvcRequestBuilders.multipart("/api/v1/users/${userDetails.id}/create-donation?details=sales&category=sale&target=23")
                 .file(file)
                 .secure(true)
                 .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -407,7 +407,7 @@ class ServerApplicationTests {
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer $jwtToken")
         )
-            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.status().isBadRequest)
             .andReturn()
 
     }
@@ -440,7 +440,7 @@ class ServerApplicationTests {
         val userDetails=userRepository.findByEmail("abc@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
         val donationDetails=donationsRepository.findDonationByDetails("sales")
-        val cardDetails=objectMapper.writeValueAsString(StripeChargeRequest(10,"4242424242424242",7,22,"2345")
+        val cardDetails=objectMapper.writeValueAsString(StripeChargeRequest(10,"4242424242424242",7,2022,"2345")
         )
         // PERFORM ...
         mockMvc.perform(
