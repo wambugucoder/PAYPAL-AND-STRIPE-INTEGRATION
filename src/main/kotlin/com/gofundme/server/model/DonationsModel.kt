@@ -2,16 +2,15 @@ package com.gofundme.server.model
 
 import com.fasterxml.jackson.annotation.JsonManagedReference
 import com.vladmihalcea.hibernate.type.array.ListArrayType
-import org.hibernate.annotations.LazyCollection
-import org.hibernate.annotations.LazyCollectionOption
-import org.hibernate.annotations.Type
-import org.hibernate.annotations.TypeDef
+import org.hibernate.annotations.*
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.jpa.domain.support.AuditingEntityListener
 import java.io.Serializable
 import java.time.LocalDateTime
 import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Entity
 
 @Entity
 @TypeDef(
@@ -67,6 +66,7 @@ class DonationsModel:Serializable {
 
     @OneToMany(orphanRemoval = true,cascade = [CascadeType.ALL])
     @LazyCollection(LazyCollectionOption.FALSE)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonManagedReference
     var transactions:List<TransactionsModel>? = emptyList()
 

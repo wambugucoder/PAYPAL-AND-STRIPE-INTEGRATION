@@ -455,18 +455,20 @@ class ServerApplicationTests {
             .andReturn()
 
     }
+
     @Test
     @Order(21)
-    @DisplayName("/api/v1/admin/block-user/{email} -Expect 200")
+    @DisplayName("/api/v1/users/{uid}/close-donation/{did} -Expect 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
-    fun blockUser(){
-        // GIVEN A TOKEN,USER ID,DONATION ID AND CARD DETAILS
+    fun closeDonation(){
+        // GIVEN A TOKEN,USER ID,DONATION ID
         val userDetails=userRepository.findByEmail("abc@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
+        val donationDetails=donationsRepository.findDonationByDetails("sales")
 
-        //PERFORM
+       // PERFORM...
         mockMvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/admin/block-user/abc@gmail.com")
+            MockMvcRequestBuilders.put("/api/v1/users/${userDetails.id}/close-donation/${donationDetails.id}")
                 .secure(true)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
@@ -478,28 +480,6 @@ class ServerApplicationTests {
     }
     @Test
     @Order(22)
-    @DisplayName("/api/v1/users/{uid}/close-donation/{did} -Expect 200")
-    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
-    fun closeDonation(){
-        // GIVEN A TOKEN,USER ID,DONATION ID
-        val userDetails=userRepository.findByEmail("abc@gmail.com")
-        val jwtToken=jwtService.generateLoginToken(userDetails)
-        val donationDetails=donationsRepository.findDonationByDetails("sales")
-
-       // PERFORM...
-        mockMvc.perform(
-            MockMvcRequestBuilders.put("/api/v1/users/{${userDetails.id}/close-donation/${donationDetails.id}")
-                .secure(true)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .accept(MediaType.APPLICATION_JSON)
-                .header("Authorization","Bearer $jwtToken")
-        )
-            .andExpect(MockMvcResultMatchers.status().isOk)
-            .andReturn()
-
-    }
-    @Test
-    @Order(23)
     @DisplayName("/api/v1/users/{uid}/delete-donation/{did} -Expect 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun deleteDonation(){
@@ -511,6 +491,27 @@ class ServerApplicationTests {
         // PERFORM..
         mockMvc.perform(
             MockMvcRequestBuilders.delete("/api/v1/users/${userDetails.id}/delete-donation/${donationDetails.id}")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer $jwtToken")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
+    }
+    @Test
+    @Order(23)
+    @DisplayName("/api/v1/admin/block-user/{email} -Expect 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun blockUser(){
+        // GIVEN A TOKEN,USER ID,DONATION ID AND CARD DETAILS
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+
+        //PERFORM
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/admin/block-user/abc@gmail.com")
                 .secure(true)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON)
