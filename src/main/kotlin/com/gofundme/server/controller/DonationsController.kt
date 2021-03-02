@@ -53,7 +53,7 @@ class DonationsController {
 
     }
 
-    @DeleteMapping("/api/v1/users/{uid}/delete-poll/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @DeleteMapping("/api/v1/users/{uid}/delete-donation/{did}",produces = [MediaType.APPLICATION_JSON_VALUE],consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun deleteDonation(@PathVariable uid:Long,@PathVariable did:Long): ResponseEntity<ClosingDonationResponse> {
         return donationsService.deleteDonationById(did)
 
