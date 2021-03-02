@@ -436,7 +436,7 @@ class ServerApplicationTests {
     @DisplayName("/api/v1/{uid}/{did}/stripe/make-pay -Expect 200")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun makeStripePayment(){
-        // GIVEN A TOKEN,USER ID,DONATION ID
+        // GIVEN A TOKEN,USER ID,DONATION ID AND CARD DETAILS
         val userDetails=userRepository.findByEmail("abc@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
         val donationDetails=donationsRepository.findDonationByDetails("sales")
