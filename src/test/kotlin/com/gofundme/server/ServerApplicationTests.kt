@@ -3,9 +3,7 @@ package com.gofundme.server
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gofundme.server.repository.DonationsRepository
 import com.gofundme.server.repository.UserRepository
-import com.gofundme.server.requestHandler.LoginHandler
-import com.gofundme.server.requestHandler.RegisterHandler
-import com.gofundme.server.requestHandler.UpdateUserRequest
+import com.gofundme.server.requestHandler.*
 import com.gofundme.server.service.JwtService
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.condition.EnabledOnJre
@@ -376,22 +374,87 @@ class ServerApplicationTests {
         val userDetails=userRepository.findByEmail("abc@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
         val donationDetails=donationsRepository.findDonationByDetails("sales")
+        val paypalData= objectMapper.writeValueAsString( PaypalRequest("10"))
 
         // PERFORM THE PAYMENT PROCEDURE
         mockMvc.perform(
             MockMvcRequestBuilders.post("/api/v1/${userDetails.id}/${donationDetails.id}/paypal/make-pay")
                 .secure(true)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(paypalData)
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer $jwtToken")
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andExpect(MockMvcResultMatchers.jsonPath("$.message").exists())
             .andReturn()
+    }
+    @Test
+    @Order(18)
+    @DisplayName("/api/v1/paypal-payment/{uid}/{did}/cancel -Expect 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun cancelPaypalTransaction(){
+        // GIVEN A TOKEN,USER ID,DONATION ID
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+        val donationDetails=donationsRepository.findDonationByDetails("sales")
 
+        // PERFORM THE CANCEL REQUEST
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/paypal-payment/${userDetails.id}/${donationDetails.id}/cancel")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer $jwtToken")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
 
     }
+    @Test
+    @Order(19)
+    @DisplayName("/api/v1/paypal-payment/{uid}/{did}/success -Expect 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun failToCompletePayment(){
+        // GIVEN A TOKEN,USER ID,DONATION ID
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+        val donationDetails=donationsRepository.findDonationByDetails("sales")
 
+        // PERFORM ...
+        mockMvc.perform(
+            MockMvcRequestBuilders.get("/api/v1/paypal-payment/${userDetails.id}/${donationDetails.id}/success?paymentId=qwqewrwwqq&PayerID=232")
+                .secure(true)
+                .header("Authorization","Bearer $jwtToken")
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andReturn()
+
+    }
+    @Test
+    @Order(20)
+    @DisplayName("/api/v1/{uid}/{did}/stripe/make-pay -Expect 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun makeStripePayment(){
+        // GIVEN A TOKEN,USER ID,DONATION ID
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+        val donationDetails=donationsRepository.findDonationByDetails("sales")
+        val cardDetails=objectMapper.writeValueAsString(StripeChargeRequest(10,"4242424242424242",7,22,"2345")
+        )
+        // PERFORM ...
+        mockMvc.perform(
+            MockMvcRequestBuilders.post("/api/v1/${userDetails.id}/${donationDetails.id}/stripe/make-pay")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(cardDetails)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer $jwtToken")
+        )
+            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andReturn()
+
+    }
 
 
 
