@@ -451,7 +451,7 @@ class ServerApplicationTests {
                 .accept(MediaType.APPLICATION_JSON)
                 .header("Authorization","Bearer $jwtToken")
         )
-            .andExpect(MockMvcResultMatchers.status().is4xxClientError)
+            .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
 
     }
