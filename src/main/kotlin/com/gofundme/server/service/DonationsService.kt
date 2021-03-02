@@ -56,15 +56,7 @@ class DonationsService {
         return ResponseEntity.ok().body(ClosingDonationResponse(message = "Donation with id - $id has been closed Successfully",httpStatus = HttpStatus.OK))
 
     }
-    fun deleteDonationById(id:Long): ResponseEntity<ClosingDonationResponse> {
-        if(!donationsRepository.existsById(id)){
-            logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "DonationsService",message = "Deleting Donation with id - $id does not exist"))
-            return ResponseEntity.badRequest().body(ClosingDonationResponse(message = "Donation with invalid id - $id could not be deleted",httpStatus = HttpStatus.BAD_REQUEST))
 
-        }
-        donationsRepository.deleteById(id)
-        return ResponseEntity.ok().body(ClosingDonationResponse(message = "Donation with id - $id has been deleted Successfully",httpStatus = HttpStatus.OK))
-    }
     fun createDonation(donationHandler: DonationHandler,id:Long,fileReceived:MultipartFile): ResponseEntity<DonationResponse> {
         val userdetails= userRepository.findUserById(id)
         val fileName = fileReceived.originalFilename?.let { StringUtils.cleanPath(it) }
