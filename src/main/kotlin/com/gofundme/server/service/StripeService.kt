@@ -75,7 +75,7 @@ class StripeService {
                 initiator = userDetails,
                 amountDonated = stripeChargeRequest.amount.toDouble(),
                 donation = donationDetails,
-                receiptId = stripeDetails.receiptNumber
+                receiptId = stripeDetails.id
             )
             transactionRepository.save(transactionDetails)
             //UPDATE DONATION COUNT AND USER WHO DONATED
@@ -84,7 +84,7 @@ class StripeService {
         }
         catch (e:StripeException){
             logStream.sendToLogConsole(LogStreamResponse(level = "ERROR",serviceAffected = "StripeService",message = "${userDetails.email} has the following errors: ${e.stripeError}"))
-            return ResponseEntity.badRequest().body(StripeResponse("Incorrect card Details-$e",httpStatus = HttpStatus.BAD_REQUEST))
+            return ResponseEntity.badRequest().body(StripeResponse("Incorrect card Details",httpStatus = HttpStatus.BAD_REQUEST))
         }
 
 

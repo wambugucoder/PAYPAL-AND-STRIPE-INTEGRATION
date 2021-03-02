@@ -440,7 +440,7 @@ class ServerApplicationTests {
         val userDetails=userRepository.findByEmail("abc@gmail.com")
         val jwtToken=jwtService.generateLoginToken(userDetails)
         val donationDetails=donationsRepository.findDonationByDetails("sales")
-        val cardDetails=objectMapper.writeValueAsString(StripeChargeRequest(10,"4242424242424242",7,2022,"2345")
+        val cardDetails=objectMapper.writeValueAsString(StripeChargeRequest(1000,"4242424242424242",7,2022,"2345")
         )
         // PERFORM ...
         mockMvc.perform(
@@ -453,6 +453,28 @@ class ServerApplicationTests {
         )
             .andExpect(MockMvcResultMatchers.status().isOk)
             .andReturn()
+
+    }
+    @Test
+    @Order(20)
+    @DisplayName("/api/v1/admin/block-user/{email} -Expect 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    fun blockUser(){
+        // GIVEN A TOKEN,USER ID,DONATION ID AND CARD DETAILS
+        val userDetails=userRepository.findByEmail("abc@gmail.com")
+        val jwtToken=jwtService.generateLoginToken(userDetails)
+
+        //PERFORM
+        mockMvc.perform(
+            MockMvcRequestBuilders.put("/api/v1/admin/block-user/abc@gmail.com")
+                .secure(true)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Authorization","Bearer $jwtToken")
+        )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andReturn()
+
 
     }
 
