@@ -1,27 +1,5 @@
 version: "3"
 services:
-    server:
-        build: .
-        ports:
-          - 8443:8443
-        depends_on:
-          - database
-          - redis
-          - zookeeper
-          - kafka
-        links:
-          - database
-          - redis
-          - zookeeper
-          - kafka
-        environment:
-          SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/GoFundMe-prod
-          SPRING_DATASOURCE_USERNAME: postgres
-          SPRING_DATASOURCE_PASSWORD: postgres
-          SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
-        restart: always
-        networks:
-          - backend-server 
     database:
         image: postgres:alpine
         environment:
@@ -74,6 +52,28 @@ services:
         - ./:/etc/kafka
       networks:
         - backend-server
+    server:
+        build: .
+        ports:
+          - 8443:8443
+        depends_on:
+          - database
+          - redis
+          - zookeeper
+          - kafka
+        links:
+          - database
+          - redis
+          - zookeeper
+          - kafka
+        environment:
+          SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/GoFundMe-prod
+          SPRING_DATASOURCE_USERNAME: postgres
+          SPRING_DATASOURCE_PASSWORD: postgres
+          SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
+        #restart: always
+        networks:
+          - backend-server 
 networks:
     backend-server:
          driver: bridge

@@ -1,12 +1,17 @@
 # For Java 8, try this
-FROM openjdk:8-jdk-alpine
-# Refer to Maven build -> finalName
-ARG JAR_FILE=target/server-0.0.1-SNAPSHOT.jar
+FROM maven:3.5.3-jdk-8-alpine
+
 # Place working directory on \server
 WORKDIR /server
-# cp target/server-0.0.1-SNAPSHOT.jar /server/server.jar
-COPY ${JAR_FILE} server.jar
-# Expose port 8443
-EXPOSE 8443
+
+# copy dependency file
+COPY pom.xml .
+
+# Resolve dependencies
+RUN mvn dependency:go-offline -B
+
+# Copy source file
+COPY ./src  /server/src
+
 # java -jar /app/app.jar
-ENTRYPOINT ["java","-jar","server.jar"]
+RUN mvn package
