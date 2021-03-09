@@ -11,7 +11,7 @@ COPY pom.xml .
 RUN mvn dependency:go-offline -B
 
 # Copy source file
-COPY ./src  /server/src
+COPY ./src /server/src
 
 # java -jar /app/app.jar
-RUN mvn package
+CMD ["mvn", "package"]

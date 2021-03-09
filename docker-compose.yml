@@ -45,7 +45,10 @@ services:
       environment:
         KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
         KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-        KAFKA_ADVERTISED_HOST_NAME: kafka   
+        KAFKA_BROKER_ID: 1
+        KAFKA_ADVERTISED_PORT: 9092
+        KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://192.168.99.100:9092
+        KAFKA_ADVERTISED_HOST_NAME: 192.168.99.100
       depends_on:
         - zookeeper
       volumes:
