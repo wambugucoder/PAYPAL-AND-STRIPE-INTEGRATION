@@ -1,0 +1,13 @@
+{
+  "options": {
+    "detectPull": true
+  },
+  "checks": {
+    ".gitignore": {
+      "script": "!!(tree.tree.find(t => t.path === 'pom.xml'))",
+      "message": [
+        "The repository must contain a pom.xml file"
+      ]
+    }
+  }
+}
