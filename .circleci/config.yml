@@ -25,10 +25,7 @@ jobs:
       - run:
           name: Setup a Testcontainer
           command: |
-            docker run -it --name testcontainer dockerapp1_server /bin/bash
+            docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
 
-      - run:
-          name: Run Tests
-          command: |
-            mvn clean test
+
 
