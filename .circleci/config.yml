@@ -26,6 +26,9 @@ jobs:
           name: Setup a Testcontainer
           command: |
             docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
+      - store_artifacts:
+          path: target
+
 
 
 
