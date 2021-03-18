@@ -15,5 +15,14 @@ jobs:
       - run:
           name: Start up Services
           command: |
-            docker-compose up -d database redis zookeeper kafka server
+            docker-compose up -d database redis zookeeper kafka
             docker-compose ps
+      - run:
+          name: Build Up Server
+          command: |
+            docker-compose build server
+
+      - run:
+          name: Setup a Testcontainer
+          command: |
+            docker run -it --name testcontainer dockerapp1_server /bin/bash
