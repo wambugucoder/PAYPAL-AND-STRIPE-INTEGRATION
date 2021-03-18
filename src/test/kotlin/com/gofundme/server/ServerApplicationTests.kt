@@ -216,6 +216,7 @@ class ServerApplicationTests {
     @Order(9)
     @DisplayName("/api/v1/admin/all-users -Expect status 300")
     @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun failToFetchAllUsers(){
         //GIVEN NO TOKEN
         //WHEN
@@ -230,6 +231,8 @@ class ServerApplicationTests {
     @Test
     @Order(10)
     @DisplayName("/api/v1/admin/specific-user/{id} -Expect status 200")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun getSpecificUserAsAdmin(){
         //GIVEN TOKEN AND ADMIN CREDENTIALS
         val userDetails=userRepository.findByEmail("jos@gmail.com")
@@ -249,7 +252,8 @@ class ServerApplicationTests {
     @Test
     @Order(11)
     @DisplayName("/api/v1/admin/specific-user/{id} -Expect status 300 or 400")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun doNotGetSpecificUser(){
         //GIVEN NO TOKEN AND ASSUMING USER HAS ROLE USER
         val userDetails=userRepository.findByEmail("jos@gmail.com")
@@ -267,7 +271,8 @@ class ServerApplicationTests {
     @Test
     @Order(12)
     @DisplayName("/api/v1/admin/update-user/{id} -Expect status 200")
-    //@EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun updateUserDetails(){
         //GIVEN TOKEN AND ADMIN CREDENTIALS
         val userDetails=userRepository.findByEmail("jos@gmail.com")
@@ -289,7 +294,8 @@ class ServerApplicationTests {
     @Test
     @Order(13)
     @DisplayName("/api/v1/admin/update-user/{id} -Expect status 300 or 400")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun failToUpdateWithPartialDetails(){
         //GIVEN TOKEN AND ADMIN CREDENTIALS
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -312,7 +318,8 @@ class ServerApplicationTests {
     @Test
     @Order(14)
     @DisplayName("/api/v1/users/{id}/create-donation - Expect status 200")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun createDonation(){
         //GIVEN TOKEN AND USER CREDENTIALS
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -340,7 +347,8 @@ class ServerApplicationTests {
     @Test
     @Order(15)
     @DisplayName("/api/v1/users/{id}/all-donations - Expect 200")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun getAllDonations(){
         //GIVEN A TOKEN
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -360,7 +368,8 @@ class ServerApplicationTests {
     @Test
     @Order(16)
     @DisplayName("/api/v1/users/{uid}/donations/{did} -Expect 200")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun getSpecificDonationById(){
         //GIVEN A TOKEN,USER ID,DONATION ID
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -380,7 +389,8 @@ class ServerApplicationTests {
     @Test
     @Order(17)
     @DisplayName("/api/v1/{uid}/{did}/paypal/make-pay -Expect 200")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun payWithPaypal(){
         // GIVEN A TOKEN,USER ID,DONATION ID
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -404,7 +414,8 @@ class ServerApplicationTests {
     @Test
     @Order(18)
     @DisplayName("/api/v1/paypal-payment/{uid}/{did}/cancel -Expect 200")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun cancelPaypalTransaction(){
         // GIVEN A TOKEN,USER ID,DONATION ID
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -426,7 +437,8 @@ class ServerApplicationTests {
     @Test
     @Order(19)
     @DisplayName("/api/v1/paypal-payment/{uid}/{did}/success -Expect 200")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun failToCompletePayment(){
         // GIVEN A TOKEN,USER ID,DONATION ID
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -446,7 +458,8 @@ class ServerApplicationTests {
     @Test
     @Order(20)
     @DisplayName("/api/v1/{uid}/{did}/stripe/make-pay -Expect 200")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun makeStripePayment(){
         // GIVEN A TOKEN,USER ID,DONATION ID AND CARD DETAILS
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -471,7 +484,8 @@ class ServerApplicationTests {
     @Test
     @Order(21)
     @DisplayName("/api/v1/users/{uid}/close-donation/{did} -Expect 200")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun closeDonation(){
         // GIVEN A TOKEN,USER ID,DONATION ID
         val userDetails=userRepository.findByEmail("abc@gmail.com")
@@ -493,7 +507,8 @@ class ServerApplicationTests {
     @Test
     @Order(22)
     @DisplayName("/api/v1/admin/block-user/{email} -Expect 200")
-  //  @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun blockUser(){
         // GIVEN A TOKEN,USER ID,DONATION ID AND CARD DETAILS
         val userDetails=userRepository.findByEmail("abc@gmail.com")
