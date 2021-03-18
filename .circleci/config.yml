@@ -1,4 +1,6 @@
 version: 2
+orbs:
+  codecov: codecov/codecov@1.0.2
 jobs:
   build:
     working_directory: /dockerapp1
@@ -26,8 +28,15 @@ jobs:
           name: Setup a Testcontainer
           command: |
             docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
+      - run:
+          name: Setup a Testcontainer
+          command: |
+            docker run -it --name testcontainer dockerapp1_server sh -c "cd server"
       - store_artifacts:
-          path: target
+            path: target
+      - codecov/upload:
+           file: './coverage/clover.xml'
+           token: 2b40e5a9-4a6c-4b07-a19d-1a7260fdf3e8
 
 
 
