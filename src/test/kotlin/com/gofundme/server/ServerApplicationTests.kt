@@ -6,9 +6,11 @@ import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.*
 import com.gofundme.server.service.JwtService
 import org.junit.jupiter.api.*
+
 import org.junit.jupiter.api.condition.EnabledOnJre
 import org.junit.jupiter.api.condition.JRE
 import org.junit.jupiter.api.extension.ExtendWith
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -27,7 +29,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 )
 @AutoConfigureMockMvc
 @TestPropertySource(locations = ["classpath:application-test.properties"])
-@ExtendWith(SpringExtension::class)
+//@ExtendWith(SpringExtension::class)
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @DisplayName("GO-FUND-ME INTEGRATION TESTS")
