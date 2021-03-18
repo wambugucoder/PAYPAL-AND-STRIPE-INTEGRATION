@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 orbs:
   codecov: codecov/codecov@1.0.2
 jobs:
@@ -30,10 +30,8 @@ jobs:
             docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
             docker run -it --name testcontainer2 dockerapp1_server sh -c "cd server"
       - store_artifacts:
-            path: target
-      - codecov/upload:
-           file: './coverage/clover.xml'
-           token: 2b40e5a9-4a6c-4b07-a19d-1a7260fdf3e8
+            path: target/surefire-reports
+
 
 
 
