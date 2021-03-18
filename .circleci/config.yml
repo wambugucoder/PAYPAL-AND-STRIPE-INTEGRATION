@@ -28,10 +28,7 @@ jobs:
           name: Setup a Testcontainer
           command: |
             docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
-      - run:
-          name: Setup a Testcontainer
-          command: |
-            docker run -it --name testcontainer dockerapp1_server sh -c "cd server"
+            docker run -it --name testcontainer2 dockerapp1_server sh -c "cd server"
       - store_artifacts:
             path: target
       - codecov/upload:
