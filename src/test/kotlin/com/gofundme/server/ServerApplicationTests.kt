@@ -8,7 +8,9 @@ import com.gofundme.server.service.JwtService
 import org.junit.jupiter.api.*
 
 import org.junit.jupiter.api.condition.EnabledOnJre
+import org.junit.jupiter.api.condition.EnabledOnOs
 import org.junit.jupiter.api.condition.JRE
+import org.junit.jupiter.api.condition.OS
 import org.junit.jupiter.api.extension.ExtendWith
 
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,7 +31,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 )
 @AutoConfigureMockMvc
 @TestPropertySource(locations = ["classpath:application-test.properties"])
-//@ExtendWith(SpringExtension::class)
+@ExtendWith(SpringExtension::class)
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 @DisplayName("GO-FUND-ME INTEGRATION TESTS")
@@ -56,7 +58,8 @@ class ServerApplicationTests {
     @Test
     @Order(1)
     @DisplayName("/api/v1/auth/register  -Expect status 200")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun registerUser(){
 
         // GIVEN
@@ -78,7 +81,8 @@ class ServerApplicationTests {
     @Test
     @Order(2)
     @DisplayName("/api/v1/auth/register -Expect status 400")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun doNotRegisterUser(){
 
         //GIVEN WRONG DETAILS
@@ -98,7 +102,8 @@ class ServerApplicationTests {
     @Test
     @Order(3)
     @DisplayName("/api/v1/auth/activate/token -Expect status 200")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun activateEmail(){
         //GIVEN A TOKEN
         val token=jwtService.generateActivationToken(email = "jos@gmail.com")
@@ -115,7 +120,8 @@ class ServerApplicationTests {
     @Test
     @Order(4)
     @DisplayName("/api/v1/auth/activate/token -Expect status 400")
-    // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun doNotActivateEmail(){
         //GIVEN WRONG TOKEN
         val token=jwtService.generateActivationToken(email = "jos@gmail.com")
@@ -131,7 +137,8 @@ class ServerApplicationTests {
     @Test
     @Order(5)
     @DisplayName("/api/v1/auth/login -Expect status 200")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun loginUser(){
 
         //GIVEN CORRECT CREDENTIALS
@@ -149,7 +156,8 @@ class ServerApplicationTests {
     @Test
     @Order(6)
     @DisplayName("/api/v1/auth/login -Expect status 400")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun doNotLoginUser(){
 
         //GIVEN CORRECT CREDENTIALS
@@ -165,7 +173,8 @@ class ServerApplicationTests {
     @Test
     @Order(7)
     @DisplayName("/api/v1/moderator/makeAdmin/{id} -Expect status 200")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun makeAdmin(){
         //GIVEN A TOKEN AND USER ID
         val userDetails=userRepository.findByEmail("jos@gmail.com")
@@ -186,7 +195,8 @@ class ServerApplicationTests {
     @Test
     @Order(8)
     @DisplayName("/api/v1/admin/all-users -Expect status 200")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnOs(OS.LINUX,disabledReason = "Test should run under docker in a CI/CD environment")
     fun getAllUsers(){
         //GIVEN A TOKEN
         val userDetails=userRepository.findByEmail("jos@gmail.com")
@@ -205,7 +215,7 @@ class ServerApplicationTests {
     @Test
     @Order(9)
     @DisplayName("/api/v1/admin/all-users -Expect status 300")
-   // @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
+    @EnabledOnJre(JRE.JAVA_8,disabledReason = "Server was programmed to run on Java 8")
     fun failToFetchAllUsers(){
         //GIVEN NO TOKEN
         //WHEN
