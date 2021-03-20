@@ -29,9 +29,15 @@ jobs:
             docker images
 
       - run:
-          name: Test and verify code coverage
+          name: Run Test
+          command: |
+            docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
+      - run:
+          name: Ensure code coverage is above 90%
           command: |
             docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean verify"
+
+
       - run:
           name: Transfer artifacts to local machine
           command: |
