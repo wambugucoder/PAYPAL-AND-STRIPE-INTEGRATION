@@ -1,6 +1,6 @@
 package com.gofundme.server.service
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value

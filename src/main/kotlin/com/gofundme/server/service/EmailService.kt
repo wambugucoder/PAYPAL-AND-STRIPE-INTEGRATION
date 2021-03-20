@@ -1,6 +1,6 @@
 package com.gofundme.server.service
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.requestHandler.RegisterHandler
 import io.rocketbase.commons.colors.ColorPalette

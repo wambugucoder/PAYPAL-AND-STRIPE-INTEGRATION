@@ -1,6 +1,6 @@
 package com.gofundme.server.controller
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.requestHandler.DonationHandler
 import com.gofundme.server.responseHandler.ClosingDonationResponse
@@ -8,14 +8,10 @@ import com.gofundme.server.responseHandler.DonationResponse
 import com.gofundme.server.service.DonationsService
 import com.gofundme.server.service.LogStream
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
-import java.util.*
-import javax.validation.Valid
 
 @RestController
 class DonationsController {
