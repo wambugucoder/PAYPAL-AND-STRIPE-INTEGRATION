@@ -23,6 +23,10 @@ jobs:
           name: Build Up Server
           command: |
             docker-compose build server
+      - run:
+          name: Show All Images
+          command: |
+            docker images
 
       - run:
           name: Test and verify code coverage
