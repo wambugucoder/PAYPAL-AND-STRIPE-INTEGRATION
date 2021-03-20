@@ -1,6 +1,6 @@
 package com.gofundme.server.service
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.model.UserModel
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts

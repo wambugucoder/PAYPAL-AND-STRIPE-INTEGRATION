@@ -1,7 +1,7 @@
 package com.gofundme.server.service
 
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.model.FileModel
 import com.gofundme.server.model.TransactionsModel
@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.util.StringUtils
 import org.springframework.web.multipart.MultipartFile
-import java.util.*
 
 @Service
 class DonationsService {

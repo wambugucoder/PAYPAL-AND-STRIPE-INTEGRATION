@@ -59,6 +59,7 @@ services:
         build: .
         ports:
           - 8443:8443
+        container_name: gofundme_server
         depends_on:
           - database
           - redis

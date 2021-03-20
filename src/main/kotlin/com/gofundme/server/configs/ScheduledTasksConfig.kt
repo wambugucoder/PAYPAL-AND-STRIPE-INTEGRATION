@@ -1,6 +1,6 @@
 package com.gofundme.server.configs
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.model.DonationsModel
 import com.gofundme.server.service.*
 import org.springframework.beans.factory.annotation.Autowired

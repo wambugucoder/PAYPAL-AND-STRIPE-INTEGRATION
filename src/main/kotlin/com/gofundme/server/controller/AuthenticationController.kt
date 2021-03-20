@@ -1,6 +1,6 @@
 package com.gofundme.server.controller
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.requestHandler.LoginHandler
 import com.gofundme.server.requestHandler.RegisterHandler
 import com.gofundme.server.responseHandler.AccountActivationResponse
@@ -8,8 +8,6 @@ import com.gofundme.server.responseHandler.LoginResponse
 import com.gofundme.server.responseHandler.RegisterResponse
 import com.gofundme.server.service.AuthenticationService
 import com.gofundme.server.service.LogStream
-import com.gofundme.server.service.StripeService
-import com.stripe.model.Charge
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType

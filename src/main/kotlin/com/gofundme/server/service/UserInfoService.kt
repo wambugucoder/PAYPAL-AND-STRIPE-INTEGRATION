@@ -1,19 +1,17 @@
 package com.gofundme.server.service
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.model.UserModel
 import com.gofundme.server.model.UserRoles
 import com.gofundme.server.repository.UserRepository
 import com.gofundme.server.requestHandler.UpdateUserRequest
 import com.gofundme.server.responseHandler.BlockResponse
-import com.gofundme.server.responseHandler.FailureResponse
 import com.gofundme.server.responseHandler.MakeAdminResponse
 import com.gofundme.server.responseHandler.UpdateUserDetailsResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class UserInfoService {

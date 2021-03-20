@@ -1,6 +1,6 @@
 package com.gofundme.server.security
 
-import LogStreamResponse
+import com.gofundme.server.responseHandler.LogStreamResponse
 import com.gofundme.server.service.GoFundMeUserDetailsService
 import com.gofundme.server.service.JwtService
 import com.gofundme.server.service.LogStream
