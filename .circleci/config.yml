@@ -47,7 +47,6 @@ jobs:
       - store_artifacts:
             path: target
 workflows:
-  version: 2.1
   build_and_test:
     jobs:
       - build
