@@ -14,6 +14,11 @@ jobs:
           command: |
             apk add --no-cache py-pip=9.0.0-r1
             pip install docker-compose==1.15.0
+  test:
+    working_directory: /dockerapp1
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
       - run:
           name: Start up Services
           command: |
@@ -23,15 +28,6 @@ jobs:
           name: Build Up Server
           command: |
             docker-compose build server
-      - run:
-          name: Show All Image
-          command: |
-            docker images
-  test:
-    working_directory: /dockerapp1
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
       - run:
           name: Test and verify code coverage is above 90%
           command: |
