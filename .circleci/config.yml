@@ -42,7 +42,7 @@ jobs:
             path: /dockerapp1/artifacts
 
       - codecov/upload:
-          file: './dockerapp1/artifacts/site/jacoco/index.xml'
+          file: /dockerapp1/artifacts/site/jacoco/index.xml
           token: 2b40e5a9-4a6c-4b07-a19d-1a7260fdf3e8
 
 
