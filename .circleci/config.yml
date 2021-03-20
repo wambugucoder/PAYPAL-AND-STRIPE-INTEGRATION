@@ -36,11 +36,11 @@ jobs:
           name: Transfer artifacts to local machine
           command: |
             docker create -ti --name artifacts dockerapp1_server bash
-            docker cp artifacts:/server/target  /dockerapp1/target
+            docker cp artifacts:/server/target  /dockerapp1
             docker rm -f artifacts
 
       - store_artifacts:
-            path: target/surefire-reports
+            path: target
 
 
 
