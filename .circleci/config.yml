@@ -9,12 +9,6 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
-
-  test:
-    working_directory: /dockerapp1
-    docker:
-      - image: docker:17.05.0-ce-git
-    steps:
       - run:
           name: Install dependencies
           command: |
@@ -30,6 +24,10 @@ jobs:
           command: |
             docker-compose build server
       - run:
+          name: Show All Image
+          command: |
+            docker images
+      - run:
           name: Test and verify code coverage is above 90%
           command: |
              docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean verify"
@@ -37,17 +35,12 @@ jobs:
           name: Transfer artifacts to local machine
           command: |
             docker create -ti --name artifacts dockerapp1_server bash
-            docker cp artifacts:/server/target  /dockerapp1
+            docker cp artifacts:/server/target  /dockerapp1/artifacts
             docker rm -f artifacts
 
+      - store_artifacts:
+            path: /dockerapp1/artifacts
 
-workflows:
-  build_and_test:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
 
 
 
