@@ -25,13 +25,15 @@ jobs:
             docker-compose build server
 
       - run:
-          name: Setup a Testcontainer
+          name: Test and verify code coverage
           command: |
-            docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
+            docker run -it --name testcontainer gofundme_server sh -c "cd /server;mvn clean verify"
       - run:
-          name: Transfer Files
+          name: Transfer artifacts to local machine
           command: |
-            docker cp  dockerapp1_server:/server/target .
+            docker create -ti --name artifacts gofundme_server bash
+            docker cp artifacts:/server/target  /dockerapp1
+            docker rm -f artifacts
 
       - store_artifacts:
             path: target/surefire-reports
