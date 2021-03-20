@@ -35,8 +35,7 @@ jobs:
       - run:
           name: Transfer artifacts to local machine
           command: |
-            docker create -ti --name artifacts dockerapp1_server bash
-            docker cp artifacts:/server  /dockerapp1/artifacts
+            docker cp testcontainer:/server/target  /dockerapp1/artifacts
             docker rm -f artifacts
 
       - store_artifacts:
