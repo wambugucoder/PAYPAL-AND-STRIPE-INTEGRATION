@@ -274,7 +274,7 @@
                                     <element>PACKAGE</element>
                                     <excludes>
                                         <exclude>com.gofundme.server.configs</exclude>
-                                        <exclude>com.gofundme.server.ServerApplication</exclude>
+                                        <exclude>com.gofundme.server</exclude>
                                     </excludes>
                                     <limits>
                                         <limit>
