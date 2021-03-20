@@ -24,7 +24,7 @@ jobs:
           command: |
             docker-compose build server
       - run:
-          name: Show All Images
+          name: Show All Image
           command: |
             docker images
 
