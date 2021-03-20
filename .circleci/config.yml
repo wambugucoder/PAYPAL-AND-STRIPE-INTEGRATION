@@ -29,15 +29,9 @@ jobs:
             docker images
 
       - run:
-          name: Run Test
-          command: |
-            docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
-      - run:
-          name: Ensure code coverage is above 90%
+          name: Test and verify code coverage is above 90%
           command: |
             docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean verify"
-
-
       - run:
           name: Transfer artifacts to local machine
           command: |
@@ -46,7 +40,8 @@ jobs:
             docker rm -f artifacts
 
       - store_artifacts:
-            path: target/surefire-reports
+            path: /server/target/surefire-reports
+
 
 
 
