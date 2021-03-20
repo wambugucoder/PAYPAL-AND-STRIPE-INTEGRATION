@@ -28,13 +28,13 @@ jobs:
           command: |
             docker images
       - run:
-          name: Verify code coverage is above 90%
+          name: Verify code coverage is above 75%
           command: |
              docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean verify"
       - run:
           name: Run Tests
           command: |
-            docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean test"
+            docker run -it --name testcontainer2 dockerapp1_server sh -c "cd /server;mvn clean test"
       - run:
           name: Transfer artifacts to local machine
           command: |
