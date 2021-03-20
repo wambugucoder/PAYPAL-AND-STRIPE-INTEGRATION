@@ -11,6 +11,7 @@ jobs:
       - setup_remote_docker
 
   test:
+    working_directory: /dockerapp1
     docker:
       - image: docker:17.05.0-ce-git
     steps:
