@@ -272,8 +272,9 @@
                 <version>2.6</version>
                 <configuration>
                     <format>xml</format>
-                    
+                    <maxmem>512m</maxmem>
                     <!-- aggregated reports for multi-module projects -->
+                    <aggregate>true</aggregate>
                 </configuration>
             </plugin>
             <plugin>
