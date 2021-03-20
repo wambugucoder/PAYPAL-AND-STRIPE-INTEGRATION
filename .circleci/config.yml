@@ -32,20 +32,18 @@ jobs:
     docker:
       - image: docker:17.05.0-ce-git
     steps:
-
-       - run:
-           name: Test and verify code coverage is above 90%
-           command: |
+      - run:
+          name: Test and verify code coverage is above 90%
+          command: |
              docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean verify"
-       - run:
-           name: Transfer artifacts to local machine
-           command: |
+      - run:
+          name: Transfer artifacts to local machine
+          command: |
             docker create -ti --name artifacts dockerapp1_server bash
             docker cp artifacts:/server/target  /dockerapp1
             docker rm -f artifacts
 
-      - store_artifacts:
-            path: target
+
 workflows:
   build_and_test:
     jobs:
