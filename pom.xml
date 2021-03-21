@@ -20,6 +20,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+        <sonar.projectKey>wambugucoder_GO-FUND-ME</sonar.projectKey>
+        <sonar.organization>wambugucoder</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
 
@@ -234,20 +237,7 @@
             <url>https://dl.bintray.com/kotlin/kotlin-eap</url>
         </pluginRepository>
     </pluginRepositories>
-    <profiles>
-        <profile>
-            <id>sonar</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <sonar.host.url>https://sonarcloud.io/</sonar.host.url>
-                <sonar.organization>wambugucoder</sonar.organization>
-                <sonar.projectKey>wambugucoder_GO-FUND-ME</sonar.projectKey>
-                <sonar.login>020463380c8e405141b748880067598912df1951</sonar.login>
-            </properties>
-        </profile>
-    </profiles>
+
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>
