@@ -14,6 +14,7 @@
     <name>server</name>
     <description>A Springboot project that helps people donate towards other people&apos;s needs</description>
 
+
     <properties>
         <java.version>1.8</java.version>
         <kotlin.version>1.4.30-RC</kotlin.version>
@@ -271,17 +272,7 @@
                     <repoToken>eTrLx1kEhwzYyI2RFys1lJv89TqtoKObF</repoToken>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.7</version>
-                <configuration>
-                    <format>xml</format>
-                    <maxmem>512m</maxmem>
-                    <!-- aggregated reports for multi-module projects -->
-                    <aggregate>true</aggregate>
-                </configuration>
-            </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
