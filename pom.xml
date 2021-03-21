@@ -234,7 +234,19 @@
             <url>https://dl.bintray.com/kotlin/kotlin-eap</url>
         </pluginRepository>
     </pluginRepositories>
-
+    <profiles>
+        <profile>
+            <id>sonar</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <sonar.host.url>https://sonarcloud.io/</sonar.host.url>
+                <sonar.organization>JosWambugu</sonar.organization>
+                <sonar.login>020463380c8e405141b748880067598912df1951</sonar.login>
+            </properties>
+        </profile>
+    </profiles>
     <build>
         <sourceDirectory>src/main/kotlin</sourceDirectory>
         <testSourceDirectory>src/test/kotlin</testSourceDirectory>

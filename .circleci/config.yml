@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Generate Coveralls  Report
           command: |
-            docker run -it --name testcontainer2 dockerapp1_server sh -c "cd /server;mvn clean cobertura:cobertura coveralls:report"
+            docker run -it --name testcontainer2 dockerapp1_server sh -c "cd /server;mvn sonar:sonar"
 
 
 
