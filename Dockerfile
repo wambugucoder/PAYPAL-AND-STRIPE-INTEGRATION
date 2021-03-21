@@ -17,5 +17,5 @@ WORKDIR /code-analysis
 
 COPY --from=build /server .
 
-RUN  mvn verify sonar:sonar
+RUN  mvn sonar:sonar
 
