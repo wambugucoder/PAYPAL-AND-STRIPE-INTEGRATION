@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.4.1</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/> <!-- lookup parent from repository  -->
     </parent>
     <groupId>com.gofundme</groupId>
     <artifactId>server</artifactId>
@@ -20,6 +20,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>${maven.compiler.source}</maven.compiler.target>
+        <sonar.projectKey>wambugucoder_GO-FUND-ME</sonar.projectKey>
+        <sonar.organization>wambugucoder</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.login>d3582076905d0310866341057edc192c280f4032</sonar.login>
     </properties>
 
 

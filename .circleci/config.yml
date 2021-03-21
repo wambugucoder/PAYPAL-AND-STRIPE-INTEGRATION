@@ -23,29 +23,12 @@ jobs:
           name: Build Up Server
           command: |
             docker-compose build server
-      - run:
-          name: Show All Image
-          command: |
-            docker images
-      - run:
-          name: Test and verify code coverage is above 74%
-          command: |
-             docker run -it --name testcontainer dockerapp1_server sh -c "cd /server;mvn clean verify"
 
-      - run:
-          name: Transfer artifacts to local machine
-          command: |
-            docker cp testcontainer:/server/target  /dockerapp1/artifacts
-            docker rm -f testcontainer
-
-      - store_artifacts:
-            path: /dockerapp1/artifacts
-
-      - run:
-          name: Generate Coveralls  Report
-          command: |
-            docker run -it --name testcontainer2 dockerapp1_server sh -c "cd /server;mvn clean cobertura:cobertura coveralls:report"
-
+workflows:
+  main:
+    jobs:
+      - build:
+          context: Sonarcloud
 
 
 
