@@ -6,6 +6,7 @@
 
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=wambugucoder_GO-FUND-ME&metric=security_rating)](https://sonarcloud.io/dashboard?id=wambugucoder_GO-FUND-ME)
 
-
 # GO-FUND-ME
-An Application that helps people support each other through Donations. Written using SpringBoot 
+
+An Application that helps people support each other through Donations. Written
+using SpringBoot
