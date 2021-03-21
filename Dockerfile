@@ -7,4 +7,3 @@ WORKDIR /server
 
 # copy dependency file
 COPY . .
-
