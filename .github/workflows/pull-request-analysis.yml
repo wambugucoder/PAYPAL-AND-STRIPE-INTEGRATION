@@ -1,0 +1,2 @@
+- name: PR label by files changed
+  uses: TDAK1509/label-pr-based-on-files-changed@v1.6

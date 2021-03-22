@@ -7,6 +7,8 @@ target/
 ### WERID FILES ###
 SSlConfig.txt
 EncryptorCommand.txt
+codecov.yml
+.githint.json
 
 ### STS ###
 .apt_generated
