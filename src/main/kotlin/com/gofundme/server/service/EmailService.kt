@@ -22,9 +22,10 @@ class EmailService {
 
     @Autowired
     lateinit var logStream: LogStream
-
+    val website ="https://www.rocketbase.io"
 
     fun sendAccountActivationEmail(token: String?,registerHandler: RegisterHandler) {
+
         val builder = EmailTemplateBuilder.builder()
         val header = "Account Activation"
 
@@ -48,7 +49,7 @@ class EmailService {
         The GoFundMe Team
         """.trimIndent()
             ).and()
-            .copyright("rocketbase").url("https://www.rocketbase.io")
+            .copyright("rocketbase").url(website)
             .and()
             .addPlainTextFooter(
                 """
@@ -58,7 +59,7 @@ class EmailService {
         """.trimIndent()
             ).and()
             .addImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg","",100,0)
-            .linkUrl("https://www.rocketbase.io").and()
+            .linkUrl(website).and()
             .build()
 
         createAndSendEmail(htmlTextEmail,registerHandler)
@@ -102,7 +103,7 @@ class EmailService {
         The GoFundMe Team
         """.trimIndent()
                 ).and()
-                .copyright("rocketbase").url("https://www.rocketbase.io")
+                .copyright("rocketbase").url(website)
                 .and()
                 .addPlainTextFooter(
                     """
@@ -112,7 +113,7 @@ class EmailService {
         """.trimIndent()
                 ).and()
                 .addImage("https://cdn.rocketbase.io/assets/loading/no-image.jpg","",100,0)
-                .linkUrl("https://www.rocketbase.io").and()
+                .linkUrl(website).and()
                 .build()
 
             createAndSendApprovalEmail(htmlTextEmail,donationsModel)
