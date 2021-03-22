@@ -56,7 +56,7 @@ services:
       networks:
         - backend-server
     server:
-        build: .
+        build: ./docker/test/Dockerfile
         ports:
           - 8443:8443
         container_name: gofundme_server

@@ -5,7 +5,7 @@ FROM maven:3.5.3-jdk-8-alpine as build
 WORKDIR /server
 
 # copy dependency file
-COPY . .
+COPY ../../   .
 
 RUN mvn clean verify
 

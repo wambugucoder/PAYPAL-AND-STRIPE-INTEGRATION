@@ -17,12 +17,12 @@ jobs:
       - run:
           name: Start up Services
           command: |
-            docker-compose up -d database redis zookeeper kafka
+            docker-compose up -f docker-compose.test.yml -d database redis zookeeper kafka
             docker-compose ps
       - run:
           name: Build Up Server
           command: |
-            docker-compose build server
+            docker-compose build -f docker-compose.test.yml  server
 
 workflows:
   main:
