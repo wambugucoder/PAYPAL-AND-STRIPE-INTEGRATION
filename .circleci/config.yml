@@ -25,12 +25,31 @@ jobs:
           name: Build Up Server
           command: |
             docker-compose -f docker-compose.test.yml build  server
+  deploy:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - run:
+          name: Deploy Services to linux ubuntu
+          command: |
+            echo "Coming Soon"
+
+
+
+
 
 workflows:
   main:
     jobs:
       - build:
           context: Sonarcloud
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - main
 
 
 

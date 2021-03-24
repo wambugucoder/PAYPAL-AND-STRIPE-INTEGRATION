@@ -14,7 +14,6 @@
     <name>server</name>
     <description>A Springboot project that helps people donate towards other people&apos;s needs</description>
 
-
     <properties>
         <java.version>1.8</java.version>
         <kotlin.version>1.4.30-RC</kotlin.version>
@@ -210,6 +209,10 @@
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+        </dependency>
 
     </dependencies>
 
