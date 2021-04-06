@@ -1,2 +1,14 @@
-- name: PR label by files changed
-  uses: TDAK1509/label-pr-based-on-files-changed@v1.6
+name: Auto add label to PR based on files changed
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  label-pr-based-on-size:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Add label based on PR's files changed
+      uses: TDAK1509/label-pr-based-on-files-changed@v1.6
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+
