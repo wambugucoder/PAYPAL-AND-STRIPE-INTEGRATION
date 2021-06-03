@@ -189,7 +189,7 @@
         <dependency>
             <groupId>com.stripe</groupId>
             <artifactId>stripe-java</artifactId>
-            <version>16.8.0</version>
+            <version>20.53.0</version>
         </dependency>
 
         <dependency>
