@@ -1,4 +1,4 @@
-FROM maven:3.5.3-jdk-8-alpine AS MAVEN_BUILD
+FROM maven:3.6.1-jdk-8-alpine AS MAVEN_BUILD
 
 MAINTAINER Jos Wambugu
 
