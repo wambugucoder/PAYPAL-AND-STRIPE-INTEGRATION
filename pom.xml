@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <kotlin.version>1.4.32</kotlin.version>
+        <kotlin.version>1.5.30</kotlin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <credentials.for.analysis>d3582076905d0310866341057edc192c280f4032</credentials.for.analysis>
